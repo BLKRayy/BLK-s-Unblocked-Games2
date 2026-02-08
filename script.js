@@ -1,3 +1,5 @@
+// script.js
+
 let games = [];
 
 // player name
@@ -39,6 +41,7 @@ function renderGameGrid(list) {
   const grid = document.getElementById("game-grid");
   const frame = document.getElementById("game-frame");
   const title = document.getElementById("game-title");
+  const subtitle = document.getElementById("game-subtitle");
 
   grid.innerHTML = "";
 
@@ -59,16 +62,15 @@ function renderGameGrid(list) {
       if (e.target.classList.contains("fav-btn")) return;
 
       title.textContent = game.name;
+      subtitle.textContent = game.description || "Enjoy your game.";
       frame.src = game.url;
 
-      // recent
       let recent = JSON.parse(localStorage.getItem("recent") || "[]");
       recent = recent.filter(n => n !== game.name);
       recent.unshift(game.name);
       recent = recent.slice(0, 6);
       localStorage.setItem("recent", JSON.stringify(recent));
 
-      // player log
       if (playerName) {
         let log = JSON.parse(localStorage.getItem("playLog") || "[]");
         log.unshift({
@@ -132,7 +134,6 @@ function loadFeatured() {
   const container = document.getElementById("featured-list");
   container.innerHTML = "";
 
-  // use games with featured === true, else first 4
   let featured = games.filter(g => g.featured === true);
   if (featured.length === 0) {
     featured = games.slice(0, 4);
@@ -144,6 +145,7 @@ function loadFeatured() {
     div.innerHTML = `<img src="${game.thumb}"><br>${game.name}`;
     div.onclick = () => {
       document.getElementById("game-title").textContent = game.name;
+      document.getElementById("game-subtitle").textContent = game.description || "Enjoy your game.";
       document.getElementById("game-frame").src = game.url;
     };
     container.appendChild(div);
@@ -217,99 +219,74 @@ function loadChangelog() {
 // Fullscreen
 document.getElementById("fullscreen-btn").onclick = () => {
   const frame = document.getElementById("game-frame");
+  const hint = document.getElementById("fullscreen-hint");
   if (frame.requestFullscreen) frame.requestFullscreen();
   else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+  if (hint) hint.style.opacity = "1";
+  setTimeout(() => { if (hint) hint.style.opacity = "0"; }, 3000);
 };
 
-// Quiz Builder
-const quizBtn = document.getElementById("quiz-mode-btn");
-const quizModal = document.getElementById("quiz-modal");
-const quizCloseBtns = document.querySelectorAll(".overlay-close");
+// AI Mode
+const aiOrb = document.getElementById("ai-orb");
+const aiModal = document.getElementById("ai-modal");
+const aiModalContent = document.getElementById("ai-modal-content");
+const aiCloseBtn = document.getElementById("ai-close-btn");
+const aiInput = document.getElementById("ai-input");
+const aiSendBtn = document.getElementById("ai-send-btn");
+const aiMessages = document.getElementById("ai-messages");
 
-quizBtn.onclick = () => {
-  quizModal.style.display = "flex";
-};
+function openAiModal() {
+  aiModal.style.display = "flex";
+  aiInput.focus();
+}
 
-quizCloseBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    const target = btn.dataset.target;
-    document.getElementById(target).style.display = "none";
-  });
+function closeAiModal() {
+  aiModal.style.display = "none";
+}
+
+aiOrb.onclick = openAiModal;
+aiCloseBtn.onclick = closeAiModal;
+aiModal.addEventListener("click", e => {
+  if (e.target === aiModal) closeAiModal();
 });
 
-document.getElementById("quiz-start-btn").onclick = () => {
-  const title = document.getElementById("quiz-title").value || "Quiz";
-  const raw = document.getElementById("quiz-questions").value;
-  const lines = raw.split("\n").map(l => l.trim()).filter(l => l);
-  const area = document.getElementById("quiz-play-area");
+function addAiMessage(text, type) {
+  const div = document.createElement("div");
+  div.className = `ai-message ai-message-${type}`;
+  div.textContent = text;
+  aiMessages.appendChild(div);
+  aiMessages.scrollTop = aiMessages.scrollHeight;
+}
 
-  if (lines.length === 0) {
-    area.textContent = "Add at least one question.";
-    return;
+function generateAiResponse(prompt) {
+  const lower = prompt.toLowerCase();
+  if (lower.includes("quiz") || lower.includes("questions")) {
+    return "Here’s a quick practice set:\n1) Define the main idea in one sentence.\n2) List two key details.\n3) Explain why this topic matters in real life.";
   }
-
-  let index = 0;
-  let score = 0;
-
-  function showQuestion() {
-    if (index >= lines.length) {
-      area.innerHTML = `<h3>${title} finished!</h3><p>Score: ${score} / ${lines.length}</p>`;
-      return;
-    }
-    const q = lines[index];
-    area.innerHTML = `
-      <h3>${title}</h3>
-      <p>Question ${index + 1} of ${lines.length}</p>
-      <p>${q}</p>
-      <input id="quiz-answer" placeholder="Type your answer (not graded)">
-      <button id="quiz-next">Next</button>
-    `;
-    document.getElementById("quiz-next").onclick = () => {
-      score++; // just count attempts so it feels interactive
-      index++;
-      showQuestion();
-    };
+  if (lower.includes("explain")) {
+    return "To explain something clearly, break it into:\n• What it is\n• Why it matters\n• A simple example\n• One way to remember it.";
   }
-
-  showQuestion();
-};
-
-// BLK mini search
-const blkBtn = document.getElementById("blk-search-btn");
-const blkModal = document.getElementById("blk-modal");
-const blkInput = document.getElementById("blk-search-input");
-const blkGo = document.getElementById("blk-search-go");
-const blkResults = document.getElementById("blk-results");
-
-blkBtn.onclick = () => {
-  blkModal.style.display = "flex";
-  blkInput.focus();
-};
-
-blkGo.onclick = () => {
-  const q = blkInput.value.toLowerCase();
-  const filtered = games.filter(g =>
-    g.name.toLowerCase().includes(q) ||
-    (g.category || "").toLowerCase().includes(q)
-  );
-  blkResults.innerHTML = "";
-  if (filtered.length === 0) {
-    blkResults.textContent = "No results.";
-    return;
+  if (lower.includes("math")) {
+    return "For math problems, try:\n1) Write down what you know.\n2) Write what you’re solving for.\n3) Show each step.\n4) Check your answer with the original problem.";
   }
-  filtered.forEach(g => {
-    const div = document.createElement("div");
-    div.style.padding = "6px 0";
-    div.style.cursor = "pointer";
-    div.textContent = `${g.name} (${g.category || "Other"})`;
-    div.onclick = () => {
-      document.getElementById("game-title").textContent = g.name;
-      document.getElementById("game-frame").src = g.url;
-      blkModal.style.display = "none";
-    };
-    blkResults.appendChild(div);
-  });
-};
+  return "Here’s a way to think about it:\n• Start with a simple definition.\n• Add one real‑life example.\n• Then try to explain it back in your own words.\nIf you tell me the exact topic, I can structure it like that.";
+}
+
+function handleAiSend() {
+  const text = aiInput.value.trim();
+  if (!text) return;
+  addAiMessage(text, "user");
+  aiInput.value = "";
+  setTimeout(() => {
+    const reply = generateAiResponse(text);
+    addAiMessage(reply, "bot");
+  }, 400);
+}
+
+aiSendBtn.onclick = handleAiSend;
+aiInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") handleAiSend();
+});
 
 // Loader
 window.addEventListener("load", () => {
