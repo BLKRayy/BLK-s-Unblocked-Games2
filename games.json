@@ -249,9 +249,6 @@
     "tags": ["funny", "clicker"],
     "description": "Press the button. See what happens."
   },
-
-  /* The JSON continues exactly like this for all 100 games */
-
   {
     "name": "Moto X3M",
     "url": "https://3kh0.github.io/moto-x3m/",
