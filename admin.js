@@ -1,5 +1,5 @@
-const USER = "admin";
-const PASS = "loyal";
+const USER = "Loyal";
+const PASS = "password";
 
 const loginBox = document.getElementById("login-box");
 const adminWrapper = document.getElementById("admin-wrapper");
@@ -13,6 +13,9 @@ document.getElementById("login-btn").onclick = () => {
     loginBox.style.display = "none";
     adminWrapper.style.display = "flex";
     loadAdminGames();
+    loadAnnouncement();
+    loadTimerStatus();
+    loadPlayerLog();
   } else {
     document.getElementById("error").textContent = "Invalid login";
   }
@@ -133,6 +136,72 @@ document.getElementById("import-btn").onclick = () => {
     }
   } catch (e) {
     alert("Invalid JSON.");
+  }
+};
+
+// Announcements
+document.getElementById("save-announcement-btn").onclick = () => {
+  const text = document.getElementById("announcement-text").value;
+  localStorage.setItem("announcement", text);
+  alert("Announcement saved. It will show on the main site.");
+};
+
+function loadAnnouncement() {
+  const text = localStorage.getItem("announcement") || "";
+  const box = document.getElementById("announcement-text");
+  if (box) box.value = text;
+}
+
+// Timer controls
+document.getElementById("start-timer-btn").onclick = () => {
+  const mins = parseInt(document.getElementById("timer-minutes").value || "0", 10);
+  if (!mins || mins <= 0) {
+    alert("Enter minutes greater than 0.");
+    return;
+  }
+  const end = Date.now() + mins * 60000;
+  localStorage.setItem("timerEnd", String(end));
+  loadTimerStatus();
+  alert("Timer started. It will show on the main site.");
+};
+
+document.getElementById("clear-timer-btn").onclick = () => {
+  localStorage.removeItem("timerEnd");
+  loadTimerStatus();
+  alert("Timer cleared.");
+};
+
+function loadTimerStatus() {
+  const status = document.getElementById("timer-status");
+  if (!status) return;
+  const end = parseInt(localStorage.getItem("timerEnd") || "0", 10);
+  if (!end || Date.now() >= end) {
+    status.textContent = "No active timer.";
+    return;
+  }
+  const diff = end - Date.now();
+  const mins = Math.floor(diff / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+  status.textContent = `Active timer: ${mins}m ${secs}s remaining`;
+}
+
+// Player log
+function loadPlayerLog() {
+  const list = document.getElementById("player-log-list");
+  if (!list) return;
+  const log = JSON.parse(localStorage.getItem("playLog") || "[]");
+  list.innerHTML = "";
+  log.forEach(entry => {
+    const li = document.createElement("li");
+    li.textContent = `${entry.name} played ${entry.game} at ${entry.time}`;
+    list.appendChild(li);
+  });
+}
+
+document.getElementById("clear-log-btn").onclick = () => {
+  if (confirm("Clear player log on this device?")) {
+    localStorage.removeItem("playLog");
+    loadPlayerLog();
   }
 };
 
