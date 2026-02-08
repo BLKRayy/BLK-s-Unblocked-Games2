@@ -1,6 +1,6 @@
+// Admin credentials
 const USER = "admin";
 const PASS = "loyal";
-
 
 const loginBox = document.getElementById("login-box");
 const adminWrapper = document.getElementById("admin-wrapper");
@@ -17,15 +17,16 @@ document.getElementById("login-btn").onclick = () => {
     loadAnnouncement();
     loadTimerStatus();
     loadPlayerLog();
+    loadMaintenanceStatus();
+    loadChangelogAdmin();
   } else {
     document.getElementById("error").textContent = "Invalid login";
   }
 };
 
-// Sign out
+// Sign out -> go to homepage
 document.getElementById("logout-btn").onclick = () => {
-  adminWrapper.style.display = "none";
-  loginBox.style.display = "block";
+  window.location.href = "index.html";
 };
 
 // Navigation
@@ -61,7 +62,7 @@ function loadAdminGames() {
   games.forEach((g, i) => {
     const li = document.createElement("li");
     li.innerHTML = `
-      <span>${g.name} (${g.category})</span>
+      <span>${g.name} (${g.category || "Other"}) ${g.featured ? "⭐" : ""}</span>
       <div class="admin-game-actions">
         <button onclick="editGame(${i})">Edit</button>
         <button onclick="deleteGame(${i})">Delete</button>
@@ -77,11 +78,12 @@ document.getElementById("add-btn").onclick = () => {
   const url = document.getElementById("g-url").value;
   const thumb = document.getElementById("g-thumb").value;
   const category = document.getElementById("g-cat").value;
+  const featured = document.getElementById("g-featured").checked;
 
   const saved = localStorage.getItem("games");
   let games = saved ? JSON.parse(saved) : [];
 
-  games.push({ name, url, thumb, category });
+  games.push({ name, url, thumb, category, featured });
   localStorage.setItem("games", JSON.stringify(games));
 
   loadAdminGames();
@@ -101,8 +103,9 @@ window.editGame = function (i) {
   if (thumb === null) return;
   const category = prompt("Category:", g.category);
   if (category === null) return;
+  const featured = confirm("Mark as Top Game? (OK = Yes, Cancel = No)");
 
-  games[i] = { name, url, thumb, category };
+  games[i] = { name, url, thumb, category, featured };
   localStorage.setItem("games", JSON.stringify(games));
   loadAdminGames();
 };
@@ -205,6 +208,34 @@ document.getElementById("clear-log-btn").onclick = () => {
     loadPlayerLog();
   }
 };
+
+// Maintenance mode
+document.getElementById("maintenance-toggle-btn").onclick = () => {
+  const current = localStorage.getItem("maintenance") === "on";
+  localStorage.setItem("maintenance", current ? "off" : "on");
+  loadMaintenanceStatus();
+  alert("Maintenance mode toggled.");
+};
+
+function loadMaintenanceStatus() {
+  const status = document.getElementById("maintenance-status");
+  if (!status) return;
+  const on = localStorage.getItem("maintenance") === "on";
+  status.textContent = on ? "Maintenance is ON" : "Maintenance is OFF";
+}
+
+// Changelog
+document.getElementById("save-changelog-btn").onclick = () => {
+  const text = document.getElementById("changelog-text").value;
+  localStorage.setItem("changelog", text);
+  alert("Changelog saved. It will show on the main site.");
+};
+
+function loadChangelogAdmin() {
+  const text = localStorage.getItem("changelog") || "";
+  const box = document.getElementById("changelog-text");
+  if (box) box.value = text;
+}
 
 // Reset to default (clear localStorage so site uses games.json again)
 document.getElementById("reset-default-btn").onclick = () => {
