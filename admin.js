@@ -1,5 +1,6 @@
-const USER = "Loyal";
-const PASS = "password";
+const USER = "admin";
+const PASS = "loyal";
+
 
 const loginBox = document.getElementById("login-box");
 const adminWrapper = document.getElementById("admin-wrapper");
