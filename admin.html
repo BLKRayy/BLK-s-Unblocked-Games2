@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Panel</title>
+  <title>Admin Control Center</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,21 +15,44 @@
   <p id="error"></p>
 </div>
 
-<div id="admin-panel" style="display:none;">
-  <h1>Admin Dashboard</h1>
-
-  <div class="admin-section">
-    <h3>Add New Game</h3>
-    <input id="g-name" placeholder="Game Name">
-    <input id="g-url" placeholder="Game URL">
-    <input id="g-thumb" placeholder="Thumbnail URL">
-    <input id="g-cat" placeholder="Category">
-    <button id="add-btn">Add Game</button>
+<div id="admin-wrapper" style="display:none;">
+  <div id="admin-sidebar">
+    <h2>Control Center</h2>
+    <button class="admin-nav-btn active" data-section="add">➕ Add Game</button>
+    <button class="admin-nav-btn" data-section="manage">🛠 Manage Games</button>
+    <button class="admin-nav-btn" data-section="tools">🧰 Tools</button>
+    <button class="admin-nav-btn" data-section="settings">⚙ Settings</button>
+    <button class="admin-nav-btn" id="logout-btn">🚪 Sign Out</button>
   </div>
 
-  <div class="admin-section">
-    <h3>Manage Games</h3>
-    <ul id="game-list-admin"></ul>
+  <div id="admin-main">
+    <div class="admin-section" id="section-add">
+      <h3>Add New Game</h3>
+      <input id="g-name" placeholder="Game Name"><br>
+      <input id="g-url" placeholder="Game URL"><br>
+      <input id="g-thumb" placeholder="Thumbnail URL"><br>
+      <input id="g-cat" placeholder="Category"><br>
+      <button id="add-btn">Add Game</button>
+    </div>
+
+    <div class="admin-section" id="section-manage" style="display:none;">
+      <h3>Manage Games</h3>
+      <ul id="game-list-admin"></ul>
+    </div>
+
+    <div class="admin-section" id="section-tools" style="display:none;">
+      <h3>Tools</h3>
+      <button id="export-btn">Export Games (JSON)</button>
+      <button id="import-btn">Import Games (JSON)</button>
+      <textarea id="import-export-area" rows="8" style="width:100%; margin-top:10px;"></textarea>
+    </div>
+
+    <div class="admin-section" id="section-settings" style="display:none;">
+      <h3>Settings</h3>
+      <button id="reset-default-btn">Reset to Default games.json</button>
+      <button id="clear-all-btn" style="margin-left:10px;">Clear All Games</button>
+      <p style="margin-top:10px;">Warning: These actions cannot be undone.</p>
+    </div>
   </div>
 </div>
 
