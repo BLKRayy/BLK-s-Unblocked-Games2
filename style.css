@@ -27,7 +27,7 @@ header {
   padding: 15px;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 header h1 {
@@ -42,7 +42,9 @@ header h1 {
   object-fit: cover;
 }
 
-#search, #category-filter {
+#search,
+#category-filter,
+#player-name {
   padding: 8px;
   border-radius: 4px;
   border: none;
@@ -62,10 +64,25 @@ header h1 {
   text-decoration: none;
 }
 
+/* Announcement & timer bars */
+#announcement-bar {
+  background: #ffcc00;
+  color: #000;
+  padding: 8px 15px;
+  font-weight: bold;
+}
+
+#timer-bar {
+  background: #222;
+  color: #fff;
+  padding: 6px 15px;
+  font-size: 14px;
+}
+
 /* Layout */
 main {
   display: flex;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 70px - 40px);
 }
 
 #game-list {
@@ -222,6 +239,17 @@ main {
   margin-left: 5px;
 }
 
+/* Player log */
+#player-log-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+#player-log-list li {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
 /* Light mode */
 .light-mode {
   background: #f5f5f5;
@@ -243,4 +271,8 @@ main {
 .light-mode #theme-toggle {
   background: #ccc;
   color: #000;
+}
+
+.light-mode #announcement-bar {
+  background: #ffe066;
 }
