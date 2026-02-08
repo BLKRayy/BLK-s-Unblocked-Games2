@@ -21,6 +21,9 @@
     <button class="admin-nav-btn active" data-section="add">➕ Add Game</button>
     <button class="admin-nav-btn" data-section="manage">🛠 Manage Games</button>
     <button class="admin-nav-btn" data-section="tools">🧰 Tools</button>
+    <button class="admin-nav-btn" data-section="announce">📢 Announcements</button>
+    <button class="admin-nav-btn" data-section="timer">⏱ Timer</button>
+    <button class="admin-nav-btn" data-section="players">👥 Player Log</button>
     <button class="admin-nav-btn" data-section="settings">⚙ Settings</button>
     <button class="admin-nav-btn" id="logout-btn">🚪 Sign Out</button>
   </div>
@@ -45,6 +48,27 @@
       <button id="export-btn">Export Games (JSON)</button>
       <button id="import-btn">Import Games (JSON)</button>
       <textarea id="import-export-area" rows="8" style="width:100%; margin-top:10px;"></textarea>
+    </div>
+
+    <div class="admin-section" id="section-announce" style="display:none;">
+      <h3>Announcements</h3>
+      <textarea id="announcement-text" rows="4" style="width:100%;" placeholder="Type announcement shown on main site..."></textarea>
+      <br>
+      <button id="save-announcement-btn">Save Announcement</button>
+    </div>
+
+    <div class="admin-section" id="section-timer" style="display:none;">
+      <h3>Front Page Timer</h3>
+      <input id="timer-minutes" type="number" min="1" placeholder="Minutes">
+      <button id="start-timer-btn">Start Timer</button>
+      <button id="clear-timer-btn">Clear Timer</button>
+      <p id="timer-status"></p>
+    </div>
+
+    <div class="admin-section" id="section-players" style="display:none;">
+      <h3>Player Log (this device only)</h3>
+      <ul id="player-log-list"></ul>
+      <button id="clear-log-btn">Clear Log</button>
     </div>
 
     <div class="admin-section" id="section-settings" style="display:none;">
