@@ -1,62 +1,133 @@
-[
-  {
-    "name": "Slope",
-    "url": "https://example.com/slope/index.html",
-    "thumb": "https://example.com/slope/thumb.png",
-    "category": "Arcade",
-    "featured": true,
-    "rating": 5,
-    "tags": ["fast", "3D", "reflex"],
-    "description": "A high‑speed downhill ball game testing your reflexes."
-  },
-  {
-    "name": "Run 3",
-    "url": "https://example.com/run3/index.html",
-    "thumb": "https://example.com/run3/thumb.png",
-    "category": "Platformer",
-    "featured": true,
-    "rating": 5,
-    "tags": ["running", "platformer", "tunnel"],
-    "description": "Navigate tunnels and platforms in zero‑gravity space."
-  },
-  {
-    "name": "Basketball Stars",
-    "url": "https://example.com/basketballstars/index.html",
-    "thumb": "https://example.com/basketballstars/thumb.png",
-    "category": "Sports",
-    "featured": false,
-    "rating": 4,
-    "tags": ["basketball", "2‑player"],
-    "description": "A fast‑paced 1v1 basketball game with special moves."
-  },
-  {
-    "name": "Moto X3M",
-    "url": "https://example.com/motox3m/index.html",
-    "thumb": "https://example.com/motox3m/thumb.png",
-    "category": "Racing",
-    "featured": false,
-    "rating": 4,
-    "tags": ["motorcycle", "stunts"],
-    "description": "Perform stunts and race through dangerous obstacle courses."
-  },
-  {
-    "name": "Cookie Clicker",
-    "url": "https://example.com/cookieclicker/index.html",
-    "thumb": "https://example.com/cookieclicker/thumb.png",
-    "category": "Simulation",
-    "featured": false,
-    "rating": 5,
-    "tags": ["idle", "clicker"],
-    "description": "Grow your cookie empire in this addictive idle game."
-  },
-  {
-    "name": "1v1.LOL",
-    "url": "https://example.com/1v1lol/index.html",
-    "thumb": "https://example.com/1v1lol/thumb.png",
-    "category": "Shooting",
-    "featured": true,
-    "rating": 5,
-    "tags": ["battle", "building", "shooter"],
-    "description": "A fast 1v1 shooter with building mechanics."
-  }
-]
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BLK Games - Unblocked</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-box">
+    <div class="loader-logo">BLK</div>
+    <div class="loader-text">Booting up your game hub...</div>
+    <div class="loader-bar">
+      <div class="loader-bar-fill"></div>
+    </div>
+  </div>
+</div>
+
+<div id="particle-layer">
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<div id="maintenance-overlay">
+  <div class="maintenance-inner">
+    <div class="maintenance-icon">⚠</div>
+    <h2>Maintenance Mode</h2>
+    <p>BLK Games is currently under maintenance.<br>Check back soon for the latest version.</p>
+  </div>
+</div>
+
+<header>
+  <div class="header-left">
+    <img id="logo" src="https://raw.githubusercontent.com/BLKRayy/BLK-s-Unblocked-Games2/main/logo.png" alt="BLK Games Logo">
+    <div class="brand">
+      <h1>BLK GAMES</h1>
+      <span class="brand-sub">Unblocked • Electric Edition</span>
+    </div>
+  </div>
+
+  <div class="header-center">
+    <input type="text" id="search" placeholder="Search games...">
+    <select id="category-filter">
+      <option value="all">All Categories</option>
+      <option value="Arcade">Arcade</option>
+      <option value="Sports">Sports</option>
+      <option value="Shooting">Shooting</option>
+      <option value="Racing">Racing</option>
+      <option value="Puzzle">Puzzle</option>
+      <option value="Simulation">Simulation</option>
+      <option value="Skill">Skill</option>
+      <option value="Platformer">Platformer</option>
+    </select>
+  </div>
+
+  <div class="header-right">
+    <input type="text" id="player-name" placeholder="Your name...">
+    <button id="show-favorites" class="icon-btn" title="Favorites">⭐</button>
+    <button id="show-recent" class="icon-btn" title="Recently Played">🕒</button>
+    <button id="theme-toggle" class="icon-btn" title="Theme">🌙</button>
+    <a id="admin-link" href="admin.html" class="admin-link">Admin</a>
+  </div>
+</header>
+
+<div id="announcement-bar"></div>
+<div id="timer-bar"></div>
+
+<main>
+  <section id="game-grid-section">
+    <h2 class="section-title">All Games</h2>
+    <div id="game-grid"></div>
+  </section>
+
+  <section id="game-viewer">
+    <div id="featured">
+      <div class="section-header">
+        <h2>Top Games</h2>
+        <span class="section-sub">Hand‑picked favorites</span>
+      </div>
+      <div id="featured-list"></div>
+    </div>
+
+    <div id="viewer-header">
+      <div>
+        <h2 id="game-title">Select a game</h2>
+        <p id="game-subtitle">Click any card to start playing.</p>
+      </div>
+      <button id="fullscreen-btn" class="neon-btn">⛶ Fullscreen</button>
+    </div>
+
+    <div id="viewer-frame-wrap">
+      <iframe id="game-frame" src="" frameborder="0"></iframe>
+      <div id="fullscreen-hint">Press ESC to exit fullscreen</div>
+    </div>
+
+    <div id="changelog-box">
+      <h3>Update Log</h3>
+      <div id="changelog-content"></div>
+    </div>
+  </section>
+</main>
+
+<!-- AI Mode Orb -->
+<div id="ai-orb">
+  <div class="ai-orb-inner">AI</div>
+</div>
+
+<!-- AI Modal -->
+<div id="ai-modal">
+  <div id="ai-modal-content">
+    <div class="ai-modal-header">
+      <span>BLK AI Mode</span>
+      <button id="ai-close-btn">✕</button>
+    </div>
+    <div class="ai-modal-body">
+      <div id="ai-messages">
+        <div class="ai-message ai-message-system">
+          Ask me to explain topics, create practice questions, or summarize ideas for class.
+        </div>
+      </div>
+      <div class="ai-input-row">
+        <input id="ai-input" placeholder="Ask BLK AI something...">
+        <button id="ai-send-btn">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
