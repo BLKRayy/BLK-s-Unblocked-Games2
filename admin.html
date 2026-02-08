@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="login-box">
+  <h2>Admin Login</h2>
+  <input id="user" placeholder="Username">
+  <input id="pass" placeholder="Password" type="password">
+  <button id="login-btn">Login</button>
+  <p id="error"></p>
+</div>
+
+<div id="admin-panel" style="display:none;">
+  <h1>Admin Dashboard</h1>
+
+  <div class="admin-section">
+    <h3>Add New Game</h3>
+    <input id="g-name" placeholder="Game Name">
+    <input id="g-url" placeholder="Game URL">
+    <input id="g-thumb" placeholder="Thumbnail URL">
+    <input id="g-cat" placeholder="Category">
+    <button id="add-btn">Add Game</button>
+  </div>
+
+  <div class="admin-section">
+    <h3>Manage Games</h3>
+    <ul id="game-list-admin"></ul>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>
