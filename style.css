@@ -5,6 +5,7 @@ body {
   color: #fff;
 }
 
+/* Loader */
 #loader {
   position: fixed;
   top: 0;
@@ -20,6 +21,7 @@ body {
   z-index: 9999;
 }
 
+/* Header */
 header {
   background: #1a1a1a;
   padding: 15px;
@@ -60,6 +62,7 @@ header h1 {
   text-decoration: none;
 }
 
+/* Layout */
 main {
   display: flex;
   height: calc(100vh - 70px);
@@ -72,6 +75,7 @@ main {
   padding: 10px;
 }
 
+/* Game list */
 .game-item {
   display: flex;
   align-items: center;
@@ -99,6 +103,7 @@ main {
   cursor: pointer;
 }
 
+/* Featured */
 #featured {
   background: #1a1a1a;
   padding: 15px;
@@ -121,6 +126,7 @@ main {
   cursor: pointer;
 }
 
+/* Viewer */
 #game-viewer {
   flex: 1;
   padding: 10px;
@@ -135,9 +141,10 @@ main {
   background: #000;
 }
 
+/* Login */
 #login-box {
-  width: 300px;
-  margin: 100px auto;
+  width: 320px;
+  margin: 80px auto;
   background: #222;
   padding: 20px;
   border-radius: 6px;
@@ -150,11 +157,55 @@ main {
   margin: 10px 0;
 }
 
+/* Admin control center */
+#admin-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+#admin-sidebar {
+  width: 260px;
+  background: #111;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#admin-sidebar h2 {
+  margin-top: 0;
+}
+
+.admin-nav-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #222;
+  border: none;
+  color: #fff;
+  text-align: left;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.admin-nav-btn.active {
+  background: #0a84ff;
+}
+
+#admin-main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
 .admin-section {
   background: #1f1f1f;
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 6px;
+}
+
+.admin-section h3 {
+  margin-top: 0;
 }
 
 #game-list-admin li {
@@ -164,6 +215,11 @@ main {
   border-radius: 6px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.admin-game-actions button {
+  margin-left: 5px;
 }
 
 /* Light mode */
