@@ -1,5 +1,16 @@
 let games = [];
 
+// player name + input
+let playerName = localStorage.getItem("playerName") || "";
+const playerInput = document.getElementById("player-name");
+if (playerInput) {
+  playerInput.value = playerName;
+  playerInput.addEventListener("input", e => {
+    playerName = e.target.value.trim();
+    localStorage.setItem("playerName", playerName);
+  });
+}
+
 // Always load games.json first, then override with localStorage if present
 async function loadGames() {
   try {
@@ -46,11 +57,24 @@ function renderGames(list) {
       title.textContent = game.name;
       frame.src = game.url;
 
+      // recent
       let recent = JSON.parse(localStorage.getItem("recent") || "[]");
       recent = recent.filter(n => n !== game.name);
       recent.unshift(game.name);
       recent = recent.slice(0, 6);
       localStorage.setItem("recent", JSON.stringify(recent));
+
+      // player log (this device)
+      if (playerName) {
+        let log = JSON.parse(localStorage.getItem("playLog") || "[]");
+        log.unshift({
+          name: playerName,
+          game: game.name,
+          time: new Date().toISOString()
+        });
+        log = log.slice(0, 50);
+        localStorage.setItem("playLog", JSON.stringify(log));
+      }
     };
 
     container.appendChild(div);
@@ -126,9 +150,54 @@ toggle.onclick = () => {
   toggle.textContent = document.body.classList.contains("light-mode") ? "☀️" : "🌙";
 };
 
+// Announcement bar
+function loadAnnouncementBar() {
+  const text = localStorage.getItem("announcement") || "";
+  const bar = document.getElementById("announcement-bar");
+  if (!bar) return;
+  if (text.trim() !== "") {
+    bar.textContent = text;
+    bar.style.display = "block";
+  } else {
+    bar.style.display = "none";
+  }
+}
+
+// Timer bar
+function loadTimerBar() {
+  const bar = document.getElementById("timer-bar");
+  if (!bar) return;
+
+  const end = parseInt(localStorage.getItem("timerEnd") || "0", 10);
+  if (!end || Date.now() >= end) {
+    bar.style.display = "none";
+    return;
+  }
+
+  bar.style.display = "block";
+
+  function update() {
+    const now = Date.now();
+    const diff = end - now;
+    if (diff <= 0) {
+      bar.textContent = "Time is up!";
+      localStorage.removeItem("timerEnd");
+      return;
+    }
+    const mins = Math.floor(diff / 60000);
+    const secs = Math.floor((diff % 60000) / 1000);
+    bar.textContent = `Timer: ${mins}m ${secs}s remaining`;
+    requestAnimationFrame(update);
+  }
+
+  update();
+}
+
 // Loader
 window.onload = () => {
   document.getElementById("loader").style.display = "none";
 };
 
 loadGames();
+loadAnnouncementBar();
+loadTimerBar();
