@@ -1,103 +1,670 @@
-<!-- admin.html (same structure, works with new features) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Control Center</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>BLK Games Admin</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: #05060a;
+      color: #f5f5f5;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .admin-sidebar {
+      width: 260px;
+      background: #070814;
+      border-right: 1px solid #22263a;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    .admin-logo {
+      font-weight: 800;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+    .admin-subtitle {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 16px;
+    }
+    .admin-nav {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .admin-nav button {
+      width: 100%;
+      text-align: left;
+      padding: 10px 12px;
+      margin-bottom: 6px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #e5e7eb;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .admin-nav button span.icon {
+      width: 18px;
+      text-align: center;
+      opacity: 0.8;
+    }
+    .admin-nav button.active {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+    }
+    .admin-nav button:hover {
+      background: #111827;
+      transform: translateY(-1px);
+    }
+    .admin-footer {
+      font-size: 11px;
+      color: #6b7280;
+      border-top: 1px solid #111827;
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+    .admin-main {
+      flex: 1;
+      padding: 16px 20px;
+      overflow-y: auto;
+      box-sizing: border-box;
+      background: radial-gradient(circle at top left, #111827 0, #020617 45%, #000 100%);
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .admin-header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+    .admin-header small {
+      color: #9ca3af;
+      font-size: 12px;
+    }
+    .admin-tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #111827;
+      color: #9ca3af;
+    }
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .admin-card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 12px;
+      padding: 12px 14px;
+      border: 1px solid #1f2937;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+    .admin-card h2 {
+      margin: 0 0 4px;
+      font-size: 15px;
+    }
+    .admin-card p {
+      margin: 0;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+    .admin-card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .admin-stat {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .admin-pill {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #111827;
+      color: #9ca3af;
+    }
+    .admin-input,
+    .admin-select,
+    .admin-textarea {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 13px;
+      box-sizing: border-box;
+      margin-top: 4px;
+    }
+    .admin-textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+    .admin-label {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 6px;
+      display: block;
+    }
+    .admin-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #2563eb;
+      color: white;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.45);
+      transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+    }
+    .admin-btn.secondary {
+      background: #111827;
+      color: #e5e7eb;
+      box-shadow: none;
+    }
+    .admin-btn.danger {
+      background: #b91c1c;
+      box-shadow: 0 8px 20px rgba(185, 28, 28, 0.45);
+    }
+    .admin-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.6);
+    }
+    .admin-btn.secondary:hover {
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.8);
+    }
+    .admin-btn.danger:hover {
+      box-shadow: 0 10px 24px rgba(185, 28, 28, 0.6);
+    }
+    .admin-section {
+      display: none;
+      animation: fadeIn 0.18s ease-out;
+    }
+    .admin-section.active {
+      display: block;
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+    .admin-table th,
+    .admin-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #111827;
+      text-align: left;
+    }
+    .admin-table th {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #9ca3af;
+    }
+    .admin-badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #111827;
+      color: #9ca3af;
+    }
+    .toggle {
+      position: relative;
+      width: 36px;
+      height: 18px;
+      border-radius: 999px;
+      background: #111827;
+      cursor: pointer;
+      transition: background 0.15s;
+      display: inline-flex;
+      align-items: center;
+      padding: 2px;
+      box-sizing: border-box;
+    }
+    .toggle-circle {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      transition: transform 0.15s;
+    }
+    .toggle.on {
+      background: #22c55e;
+    }
+    .toggle.on .toggle-circle {
+      transform: translateX(16px);
+    }
+    .admin-flex {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .admin-chip {
+      font-size: 11px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: #111827;
+      color: #9ca3af;
+    }
+    .admin-log {
+      max-height: 160px;
+      overflow-y: auto;
+      font-size: 11px;
+      background: #020617;
+      border-radius: 8px;
+      padding: 6px 8px;
+      border: 1px solid #111827;
+    }
+    .admin-log-entry {
+      margin-bottom: 3px;
+      color: #9ca3af;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 800px) {
+      body {
+        flex-direction: column;
+      }
+      .admin-sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        height: auto;
+      }
+      .admin-nav {
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+      }
+      .admin-nav button {
+        white-space: nowrap;
+      }
+    }
+  </style>
 </head>
 <body>
-
-<div id="login-box">
-  <h2>Admin Login</h2>
-  <input id="user" placeholder="Username">
-  <input id="pass" placeholder="Password" type="password">
-  <button id="login-btn">Login</button>
-  <p id="error"></p>
-</div>
-
-<div id="admin-wrapper" style="display:none;">
-  <div id="admin-sidebar">
-    <h2>Control Center</h2>
-    <button class="admin-nav-btn active" data-section="add">➕ Add Game</button>
-    <button class="admin-nav-btn" data-section="manage">🛠 Manage Games</button>
-    <button class="admin-nav-btn" data-section="tools">🧰 Tools</button>
-    <button class="admin-nav-btn" data-section="announce">📢 Announcements</button>
-    <button class="admin-nav-btn" data-section="timer">⏱ Timer</button>
-    <button class="admin-nav-btn" data-section="players">👥 Player Log</button>
-    <button class="admin-nav-btn" data-section="maintenance">🚧 Maintenance</button>
-    <button class="admin-nav-btn" data-section="changelog">📜 Changelog</button>
-    <button class="admin-nav-btn" data-section="settings">⚙ Settings</button>
-    <button class="admin-nav-btn" id="logout-btn">🚪 Sign Out</button>
-  </div>
-
-  <div id="admin-main">
-    <div class="admin-section" id="section-add">
-      <h3>Add New Game</h3>
-      <input id="g-name" placeholder="Game Name"><br>
-      <input id="g-url" placeholder="Game URL"><br>
-      <input id="g-thumb" placeholder="Thumbnail URL"><br>
-      <input id="g-cat" placeholder="Category"><br>
-      <label><input type="checkbox" id="g-featured"> Mark as Top Game</label><br>
-      <button id="add-btn">Add Game</button>
+  <aside class="admin-sidebar">
+    <div>
+      <div class="admin-logo">BLK Games</div>
+      <div class="admin-subtitle">Admin Control Center v2</div>
     </div>
-
-    <div class="admin-section" id="section-manage" style="display:none;">
-      <h3>Manage Games</h3>
-      <ul id="game-list-admin"></ul>
+    <div class="admin-nav">
+      <button class="active" data-section="dashboard"><span class="icon">🏠</span>Dashboard</button>
+      <button data-section="games"><span class="icon">🎮</span>Games</button>
+      <button data-section="featured"><span class="icon">⭐</span>Featured & Home</button>
+      <button data-section="categories"><span class="icon">🗂️</span>Categories & Tags</button>
+      <button data-section="analytics"><span class="icon">📊</span>Analytics</button>
+      <button data-section="theme"><span class="icon">🎨</span>Theme & CSS</button>
+      <button data-section="security"><span class="icon">🔐</span>Security</button>
+      <button data-section="tools"><span class="icon">🧰</span>Tools & Experiments</button>
+      <button data-section="logs"><span class="icon">📜</span>Activity Log</button>
     </div>
-
-    <div class="admin-section" id="section-tools" style="display:none;">
-      <h3>Tools</h3>
-      <button id="export-btn">Export Games (JSON)</button>
-      <button id="import-btn">Import Games (JSON)</button>
-      <textarea id="import-export-area" rows="8" style="width:100%; margin-top:10px;"></textarea>
+    <div class="admin-footer">
+      <div>Logged in as: <span id="admin-username-label">admin</span></div>
+      <div>Session: <span id="admin-session-status">Active</span></div>
     </div>
+  </aside>
 
-    <div class="admin-section" id="section-announce" style="display:none;">
-      <h3>Announcements</h3>
-      <textarea id="announcement-text" rows="4" style="width:100%;" placeholder="Type announcement shown on main site..."></textarea>
-      <br>
-      <button id="save-announcement-btn">Save Announcement</button>
-    </div>
+  <main class="admin-main">
+    <header class="admin-header">
+      <div>
+        <h1 id="admin-section-title">Dashboard</h1>
+        <small id="admin-section-subtitle">Overview of your BLK Games platform.</small>
+      </div>
+      <div class="admin-flex">
+        <span class="admin-tag" id="maintenance-indicator">Maintenance: Off</span>
+        <button class="admin-btn secondary" id="btn-exit-admin">Exit Admin</button>
+      </div>
+    </header>
 
-    <div class="admin-section" id="section-timer" style="display:none;">
-      <h3>Front Page Timer</h3>
-      <input id="timer-minutes" type="number" min="1" placeholder="Minutes">
-      <button id="start-timer-btn">Start Timer</button>
-      <button id="clear-timer-btn">Clear Timer</button>
-      <p id="timer-status"></p>
-    </div>
+    <!-- DASHBOARD -->
+    <section class="admin-section active" id="section-dashboard">
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h2>Games</h2>
+          <p>Total games in library.</p>
+          <div class="admin-card-row">
+            <div class="admin-stat" id="stat-total-games">0</div>
+            <span class="admin-pill" id="stat-featured-count">0 featured</span>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h2>Traffic</h2>
+          <p>Live and recent activity (local estimate).</p>
+          <div class="admin-card-row">
+            <div>
+              <div class="admin-stat" id="stat-live-users">1</div>
+              <small style="color:#9ca3af;">Estimated live users</small>
+            </div>
+            <div>
+              <div class="admin-pill" id="stat-device-split">Desktop 100%</div>
+            </div>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h2>System</h2>
+          <p>Quick status of core systems.</p>
+          <div class="admin-card-row">
+            <div class="admin-flex">
+              <span class="admin-chip" id="stat-json-status">games.json: OK</span>
+              <span class="admin-chip" id="stat-admin-mode">Admin mode: Normal</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <div class="admin-section" id="section-players" style="display:none;">
-      <h3>Player Log (this device only)</h3>
-      <ul id="player-log-list"></ul>
-      <button id="clear-log-btn">Clear Log</button>
-    </div>
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h2>Announcement Banner</h2>
+          <p>Control a banner on the homepage.</p>
+          <label class="admin-label">Title</label>
+          <input id="banner-title" class="admin-input" placeholder="Example: New Games Added!" />
+          <label class="admin-label">Message</label>
+          <textarea id="banner-message" class="admin-textarea" placeholder="Short message for your players."></textarea>
+          <label class="admin-label">Banner Color</label>
+          <input id="banner-color" class="admin-input" type="color" value="#2563eb" />
+          <div class="admin-card-row">
+            <div class="admin-flex">
+              <div id="banner-toggle" class="toggle"><div class="toggle-circle"></div></div>
+              <small style="color:#9ca3af;">Banner enabled</small>
+            </div>
+            <button class="admin-btn" id="btn-save-banner">Save Banner</button>
+          </div>
+        </div>
 
-    <div class="admin-section" id="section-maintenance" style="display:none;">
-      <h3>Maintenance Mode</h3>
-      <p>Turn this on to block the main site with an animated maintenance screen.</p>
-      <button id="maintenance-toggle-btn">Toggle Maintenance</button>
-      <p id="maintenance-status"></p>
-    </div>
+        <div class="admin-card">
+          <h2>Maintenance Mode</h2>
+          <p>Lock the site for visitors while you work.</p>
+          <div class="admin-card-row">
+            <div class="admin-flex">
+              <div id="maintenance-toggle" class="toggle"><div class="toggle-circle"></div></div>
+              <small style="color:#9ca3af;">Maintenance mode</small>
+            </div>
+            <button class="admin-btn danger" id="btn-maintenance-message">Set Message</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <div class="admin-section" id="section-changelog" style="display:none;">
-      <h3>Changelog / Track Log</h3>
-      <textarea id="changelog-text" rows="6" style="width:100%;" placeholder="Write updates so everyone knows the latest version..."></textarea>
-      <br>
-      <button id="save-changelog-btn">Save Changelog</button>
-    </div>
+    <!-- GAMES -->
+    <section class="admin-section" id="section-games">
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h2>Add / Edit Game</h2>
+          <p>Create or update a game entry in games.json.</p>
+          <label class="admin-label">Game ID (for editing, optional)</label>
+          <input id="game-id" class="admin-input" placeholder="Leave blank to create new" />
+          <label class="admin-label">Name</label>
+          <input id="game-name" class="admin-input" placeholder="Game name" />
+          <label class="admin-label">URL</label>
+          <input id="game-url" class="admin-input" placeholder="https://3kh0.github.io/..." />
+          <label class="admin-label">Category</label>
+          <input id="game-category" class="admin-input" placeholder="Action, Puzzle, Sports..." />
+          <label class="admin-label">Tags (comma separated)</label>
+          <input id="game-tags" class="admin-input" placeholder="shooter, 2-player, retro" />
+          <label class="admin-label">Rating (1–5)</label>
+          <input id="game-rating" class="admin-input" type="number" min="1" max="5" value="5" />
+          <div class="admin-card-row">
+            <div class="admin-flex">
+              <div id="game-featured-toggle" class="toggle"><div class="toggle-circle"></div></div>
+              <small style="color:#9ca3af;">Featured</small>
+            </div>
+            <button class="admin-btn" id="btn-save-game">Save Game</button>
+          </div>
+        </div>
 
-    <div class="admin-section" id="section-settings" style="display:none;">
-      <h3>Settings</h3>
-      <button id="reset-default-btn">Reset to Default games.json</button>
-      <button id="clear-all-btn" style="margin-left:10px;">Clear All Games</button>
-      <p style="margin-top:10px;">Warning: These actions cannot be undone.</p>
-    </div>
-  </div>
-</div>
+        <div class="admin-card">
+          <h2>Bulk & Backup</h2>
+          <p>Manage the entire game list.</p>
+          <div class="admin-card-row">
+            <button class="admin-btn secondary" id="btn-export-games">Export games.json</button>
+            <button class="admin-btn secondary" id="btn-import-games">Import JSON</button>
+          </div>
+          <div class="admin-card-row">
+            <button class="admin-btn" id="btn-backup-games">Create Backup</button>
+            <button class="admin-btn danger" id="btn-restore-defaults">Restore Defaults</button>
+          </div>
+          <label class="admin-label">Import JSON</label>
+          <textarea id="import-json" class="admin-textarea" placeholder="Paste JSON array of games here to import."></textarea>
+        </div>
+      </div>
 
-<script src="admin.js"></script>
+      <div class="admin-card">
+        <h2>Game Library</h2>
+        <p>Search, edit, hide/show, and feature games.</p>
+        <div class="admin-card-row">
+          <input id="game-search" class="admin-input" placeholder="Search by name, category, or tag..." />
+          <button class="admin-btn secondary" id="btn-check-links">Check Broken Links</button>
+        </div>
+        <table class="admin-table" id="games-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Featured</th>
+              <th>Visible</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="games-table-body">
+            <!-- Filled by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FEATURED & HOME -->
+    <section class="admin-section" id="section-featured">
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h2>Featured Games</h2>
+          <p>Control which games appear in the featured row.</p>
+          <div id="featured-list" class="admin-flex" style="margin-top:6px; flex-wrap:wrap;"></div>
+          <small style="color:#9ca3af; display:block; margin-top:6px;">Toggle featured status from the Games tab as well.</small>
+        </div>
+        <div class="admin-card">
+          <h2>Hero Slider</h2>
+          <p>Configure slides for the homepage hero section.</p>
+          <label class="admin-label">Slide Title</label>
+          <input id="hero-title" class="admin-input" placeholder="Example: Play Run 3" />
+          <label class="admin-label">Slide Subtitle</label>
+          <input id="hero-subtitle" class="admin-input" placeholder="Short description" />
+          <label class="admin-label">Button Text</label>
+          <input id="hero-button-text" class="admin-input" placeholder="Play Now" />
+          <label class="admin-label">Button Link</label>
+          <input id="hero-button-link" class="admin-input" placeholder="URL or game link" />
+          <label class="admin-label">Background Image URL</label>
+          <input id="hero-bg" class="admin-input" placeholder="https://..." />
+          <div class="admin-card-row">
+            <button class="admin-btn" id="btn-add-hero-slide">Add Slide</button>
+            <button class="admin-btn secondary" id="btn-clear-hero-slides">Clear Slides</button>
+          </div>
+          <div id="hero-slides-preview" style="margin-top:8px; font-size:12px; color:#9ca3af;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES & TAGS -->
+    <section class="admin-section" id="section-categories">
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h2>Categories</h2>
+          <p>Manage game categories.</p>
+          <label class="admin-label">New Category Name</label>
+          <input id="category-name" class="admin-input" placeholder="Example: Horror" />
+          <div class="admin-card-row">
+            <button class="admin-btn" id="btn-add-category">Add Category</button>
+            <button class="admin-btn secondary" id="btn-merge-categories">Merge Categories</button>
+          </div>
+          <div id="category-list" style="margin-top:8px; font-size:12px;"></div>
+        </div>
+        <div class="admin-card">
+          <h2>Tags</h2>
+          <p>Manage tags used across games.</p>
+          <label class="admin-label">New Tag Name</label>
+          <input id="tag-name" class="admin-input" placeholder="Example: multiplayer" />
+          <div class="admin-card-row">
+            <button class="admin-btn" id="btn-add-tag">Add Tag</button>
+            <button class="admin-btn secondary" id="btn-auto-tag">Auto-tag Games</button>
+          </div>
+          <div id="tag-list" style="margin-top:8px; font-size:12px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section class="admin-section" id="section-analytics">
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h2>Top Games</h2>
+          <p>Most played games (local tracking).</p>
+          <div id="analytics-top-games" style="margin-top:6px; font-size:12px;"></div>
+        </div>
+        <div class="admin-card">
+          <h2>Recent Activity</h2>
+          <p>Recently played games.</p>
+          <div id="analytics-recent" style="margin-top:6px; font-size:12px;"></div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>Performance & Devices</h2>
+        <p>Basic performance and device breakdown.</p>
+        <div class="admin-grid">
+          <div>
+            <label class="admin-label">Average Load Time (ms)</label>
+            <input id="analytics-load-time" class="admin-input" readonly />
+          </div>
+          <div>
+            <label class="admin-label">Device Split</label>
+            <input id="analytics-device" class="admin-input" readonly />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THEME & CSS -->
+    <section class="admin-section" id="section-theme">
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h2>Theme Presets</h2>
+          <p>Quickly switch the overall vibe.</p>
+          <div class="admin-card-row">
+            <button class="admin-btn secondary theme-preset" data-theme="dark">Dark</button>
+            <button class="admin-btn secondary theme-preset" data-theme="light">Light</button>
+            <button class="admin-btn secondary theme-preset" data-theme="neon">Neon</button>
+            <button class="admin-btn secondary theme-preset" data-theme="amoled">AMOLED</button>
+          </div>
+          <label class="admin-label">Accent Color</label>
+          <input id="theme-accent" class="admin-input" type="color" value="#2563eb" />
+          <div class="admin-card-row">
+            <button class="admin-btn" id="btn-apply-theme">Apply Theme</button>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h2>Custom CSS</h2>
+          <p>Inject custom CSS into the site.</p>
+          <label class="admin-label">CSS Code</label>
+          <textarea id="custom-css" class="admin-textarea" placeholder="body { filter: grayscale(1); }"></textarea>
+          <div class="admin-card-row">
+            <button class="admin-btn" id="btn-apply-css">Apply CSS</button>
+            <button class="admin-btn secondary" id="btn-clear-css">Clear CSS</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECURITY -->
+    <section class="admin-section" id="section-security">
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h2>Admin Credentials</h2>
+          <p>Change your admin login details.</p>
+          <label class="admin-label">New Username</label>
+          <input id="security-username" class="admin-input" placeholder="New admin username" />
+          <label class="admin-label">New Password</label>
+          <input id="security-password" class="admin-input" type="password" placeholder="New password" />
+          <label class="admin-label">New PIN (for 2-step)</label>
+          <input id="security-pin" class="admin-input" placeholder="4–6 digit PIN" />
+          <div class="admin-card-row">
+            <button class="admin-btn" id="btn-save-security">Save Credentials</button>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h2>Access Control</h2>
+          <p>Control who can access the site.</p>
+          <label class="admin-label">IP Ban List (comma separated)</label>
+          <textarea id="security-ip-ban" class="admin-textarea" placeholder="127.0.0.1, 192.168.0.1"></textarea>
+          <div class="admin-card-row">
+            <button class="admin-btn secondary" id="btn-save-ip-ban">Save IP Ban List</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLS & EXPERIMENTS -->
+    <section class="admin-section" id="section-tools">
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h2>System Tools</h2>
+          <p>Quick utilities for debugging and performance.</p>
+          <div class="admin-card-row">
+            <button class="admin-btn secondary" id="btn-clear-cache">Clear Local Cache</button>
+            <button class="admin-btn secondary" id="btn-reset-localstorage">Reset LocalStorage</button>
+          </div>
+          <div class="admin-card-row">
+            <button class="admin-btn secondary" id="btn-performance-mode">Toggle Performance Mode</button>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h2>Custom JS</h2>
+          <p>Inject JavaScript into the site (advanced).</p>
+          <label class="admin-label">JavaScript Code</label>
+          <textarea id="custom-js" class="admin-textarea" placeholder="console.log('Hello from admin');"></textarea>
+          <div class="admin-card-row">
+            <button class="admin-btn" id="btn-run-js">Run JS</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY LOG -->
+    <section class="admin-section" id="section-logs">
+      <div class="admin-card">
+        <h2>Activity Log</h2>
+        <p>Recent admin actions.</p>
+        <div class="admin-log" id="activity-log"></div>
+        <div class="admin-card-row">
+          <button class="admin-btn secondary" id="btn-clear-log">Clear Log</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
 </body>
 </html>
