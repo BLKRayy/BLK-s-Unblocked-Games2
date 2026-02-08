@@ -33,7 +33,7 @@
 
 <header>
   <div class="header-left">
-    <img id="logo" src="https://raw.githubusercontent.com/BLKRayy/BLK-s-Unblocked-Games2/main/logo.png" alt="BLK Games Logo">
+    <img id="logo" src="logo.png" alt="BLK Games Logo">
     <div class="brand">
       <h1>BLK GAMES</h1>
       <span class="brand-sub">Unblocked • Electric Edition</span>
@@ -79,8 +79,22 @@
         <h2>Top Games</h2>
         <span class="section-sub">Hand‑picked favorites</span>
       </div>
-      <div id="featured-list"></div>
+      <div class="featured-nav">
+        <button id="featured-prev" class="featured-arrow">◀</button>
+        <div id="featured-list-wrap">
+          <div id="featured-list"></div>
+        </div>
+        <button id="featured-next" class="featured-arrow">▶</button>
+      </div>
     </div>
+
+    <section id="most-played-section">
+      <div class="section-header">
+        <h2>Most Played</h2>
+        <span class="section-sub">Based on this device</span>
+      </div>
+      <div id="most-played-list"></div>
+    </section>
 
     <div id="viewer-header">
       <div>
@@ -102,6 +116,21 @@
   </section>
 </main>
 
+<!-- Game Info Panel -->
+<div id="game-info-panel">
+  <div class="info-header">
+    <span id="info-title">Game Info</span>
+    <button id="info-close-btn">✕</button>
+  </div>
+  <div class="info-body">
+    <p id="info-description"></p>
+    <p><strong>Category:</strong> <span id="info-category"></span></p>
+    <p><strong>Tags:</strong> <span id="info-tags"></span></p>
+    <p><strong>Rating:</strong> <span id="info-rating"></span></p>
+    <p><strong>Plays (this device):</strong> <span id="info-plays"></span></p>
+  </div>
+</div>
+
 <!-- AI Mode Orb -->
 <div id="ai-orb">
   <div class="ai-orb-inner">AI</div>
@@ -119,6 +148,9 @@
         <div class="ai-message ai-message-system">
           Ask me to explain topics, create practice questions, or summarize ideas for class.
         </div>
+      </div>
+      <div id="ai-typing-indicator" class="ai-typing hidden">
+        <span></span><span></span><span></span>
       </div>
       <div class="ai-input-row">
         <input id="ai-input" placeholder="Ask BLK AI something...">
