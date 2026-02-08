@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Slope",
+    "url": "https://example.com/slope/index.html",
+    "thumb": "https://example.com/slope/thumb.png",
+    "category": "Arcade"
+  },
+  {
+    "name": "1v1.lol",
+    "url": "https://example.com/1v1/index.html",
+    "thumb": "https://example.com/1v1/thumb.png",
+    "category": "Shooting"
+  },
+  {
+    "name": "Retro Bowl",
+    "url": "https://example.com/retrobowl/index.html",
+    "thumb": "https://example.com/retrobowl/thumb.png",
+    "category": "Sports"
+  }
+]
