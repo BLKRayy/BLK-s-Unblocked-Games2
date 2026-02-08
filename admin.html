@@ -24,6 +24,8 @@
     <button class="admin-nav-btn" data-section="announce">📢 Announcements</button>
     <button class="admin-nav-btn" data-section="timer">⏱ Timer</button>
     <button class="admin-nav-btn" data-section="players">👥 Player Log</button>
+    <button class="admin-nav-btn" data-section="maintenance">🚧 Maintenance</button>
+    <button class="admin-nav-btn" data-section="changelog">📜 Changelog</button>
     <button class="admin-nav-btn" data-section="settings">⚙ Settings</button>
     <button class="admin-nav-btn" id="logout-btn">🚪 Sign Out</button>
   </div>
@@ -35,6 +37,7 @@
       <input id="g-url" placeholder="Game URL"><br>
       <input id="g-thumb" placeholder="Thumbnail URL"><br>
       <input id="g-cat" placeholder="Category"><br>
+      <label><input type="checkbox" id="g-featured"> Mark as Top Game</label><br>
       <button id="add-btn">Add Game</button>
     </div>
 
@@ -69,6 +72,20 @@
       <h3>Player Log (this device only)</h3>
       <ul id="player-log-list"></ul>
       <button id="clear-log-btn">Clear Log</button>
+    </div>
+
+    <div class="admin-section" id="section-maintenance" style="display:none;">
+      <h3>Maintenance Mode</h3>
+      <p>Turn this on to block the main site with a maintenance message.</p>
+      <button id="maintenance-toggle-btn">Toggle Maintenance</button>
+      <p id="maintenance-status"></p>
+    </div>
+
+    <div class="admin-section" id="section-changelog" style="display:none;">
+      <h3>Changelog / Track Log</h3>
+      <textarea id="changelog-text" rows="6" style="width:100%;" placeholder="Write updates so everyone knows the latest version..."></textarea>
+      <br>
+      <button id="save-changelog-btn">Save Changelog</button>
     </div>
 
     <div class="admin-section" id="section-settings" style="display:none;">
