@@ -21,7 +21,8 @@ const themeToggle = document.getElementById("themeToggle");
 
 // Simple hardcoded credentials (replace with your own logic)
 const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "password123";
+const ADMIN_PASSWORD = "loyal";
+
 
 // Simple state
 let isLoggingIn = false;
