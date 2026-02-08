@@ -1,74 +1,62 @@
 [
   {
     "name": "Slope",
-    "url": "https://ubg98.github.io/Slope/",
-    "thumb": "https://i.imgur.com/0ZQZQyC.png",
-    "category": "Arcade"
+    "url": "https://example.com/slope/index.html",
+    "thumb": "https://example.com/slope/thumb.png",
+    "category": "Arcade",
+    "featured": true,
+    "rating": 5,
+    "tags": ["fast", "3D", "reflex"],
+    "description": "A high‑speed downhill ball game testing your reflexes."
   },
   {
-    "name": "1v1.lol",
-    "url": "https://1v1lol-unblocked.github.io/",
-    "thumb": "https://i.imgur.com/3n1pQ2U.png",
-    "category": "Shooting"
-  },
-  {
-    "name": "Retro Bowl",
-    "url": "https://ubg98.github.io/retrobowl/",
-    "thumb": "https://i.imgur.com/8zYxg0M.png",
-    "category": "Sports"
-  },
-  {
-    "name": "Retro Bowl College",
-    "url": "https://retrobowlcollege.github.io/",
-    "thumb": "https://i.imgur.com/1pQ0u0C.png",
-    "category": "Sports"
+    "name": "Run 3",
+    "url": "https://example.com/run3/index.html",
+    "thumb": "https://example.com/run3/thumb.png",
+    "category": "Platformer",
+    "featured": true,
+    "rating": 5,
+    "tags": ["running", "platformer", "tunnel"],
+    "description": "Navigate tunnels and platforms in zero‑gravity space."
   },
   {
     "name": "Basketball Stars",
-    "url": "https://basketball-stars.co/game/basketball-stars/",
-    "thumb": "https://i.imgur.com/8xg9p4A.png",
-    "category": "Sports"
+    "url": "https://example.com/basketballstars/index.html",
+    "thumb": "https://example.com/basketballstars/thumb.png",
+    "category": "Sports",
+    "featured": false,
+    "rating": 4,
+    "tags": ["basketball", "2‑player"],
+    "description": "A fast‑paced 1v1 basketball game with special moves."
   },
   {
-    "name": "Burrito Bison",
-    "url": "https://ubg98.github.io/burrito-bison/",
-    "thumb": "https://i.imgur.com/2p6xT8x.png",
-    "category": "Arcade"
+    "name": "Moto X3M",
+    "url": "https://example.com/motox3m/index.html",
+    "thumb": "https://example.com/motox3m/thumb.png",
+    "category": "Racing",
+    "featured": false,
+    "rating": 4,
+    "tags": ["motorcycle", "stunts"],
+    "description": "Perform stunts and race through dangerous obstacle courses."
   },
   {
-    "name": "Brain Test",
-    "url": "https://brain-test.github.io/",
-    "thumb": "https://i.imgur.com/1V0wz0x.png",
-    "category": "Puzzle"
+    "name": "Cookie Clicker",
+    "url": "https://example.com/cookieclicker/index.html",
+    "thumb": "https://example.com/cookieclicker/thumb.png",
+    "category": "Simulation",
+    "featured": false,
+    "rating": 5,
+    "tags": ["idle", "clicker"],
+    "description": "Grow your cookie empire in this addictive idle game."
   },
   {
-    "name": "BitLife",
-    "url": "https://bitlifeonline.github.io/",
-    "thumb": "https://i.imgur.com/7Yp2p9N.png",
-    "category": "Simulation"
-  },
-  {
-    "name": "Subway Surfers",
-    "url": "https://ubg98.github.io/subway-surfers/",
-    "thumb": "https://i.imgur.com/5Qxgk0N.png",
-    "category": "Arcade"
-  },
-  {
-    "name": "Draw a Perfect Circle",
-    "url": "https://perfect-circle.github.io/",
-    "thumb": "https://i.imgur.com/0tYkq8M.png",
-    "category": "Skill"
-  },
-  {
-    "name": "Bottle Flip",
-    "url": "https://ubg98.github.io/bottle-flip-3d/",
-    "thumb": "https://i.imgur.com/4x0gk8B.png",
-    "category": "Arcade"
-  },
-  {
-    "name": "OvO",
-    "url": "https://ovo-unblocked.github.io/",
-    "thumb": "https://i.imgur.com/7pYk9wL.png",
-    "category": "Platformer"
+    "name": "1v1.LOL",
+    "url": "https://example.com/1v1lol/index.html",
+    "thumb": "https://example.com/1v1lol/thumb.png",
+    "category": "Shooting",
+    "featured": true,
+    "rating": 5,
+    "tags": ["battle", "building", "shooter"],
+    "description": "A fast 1v1 shooter with building mechanics."
   }
 ]
