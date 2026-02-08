@@ -1,12 +1,22 @@
 let games = [];
 
+// Always load games.json first, then override with localStorage if present
 async function loadGames() {
-  const saved = localStorage.getItem("games");
-  if (saved) {
-    games = JSON.parse(saved);
-  } else {
+  try {
     const res = await fetch("games.json");
     games = await res.json();
+  } catch (e) {
+    games = [];
+  }
+
+  const saved = localStorage.getItem("games");
+  if (saved) {
+    try {
+      const edited = JSON.parse(saved);
+      if (Array.isArray(edited) && edited.length > 0) {
+        games = edited;
+      }
+    } catch (e) {}
   }
 
   renderGames(games);
@@ -47,6 +57,7 @@ function renderGames(list) {
   });
 }
 
+// Favorites
 document.addEventListener("click", e => {
   if (e.target.classList.contains("fav-btn")) {
     const name = e.target.dataset.name;
@@ -58,12 +69,14 @@ document.addEventListener("click", e => {
   }
 });
 
+// Search
 document.getElementById("search").addEventListener("input", e => {
   const q = e.target.value.toLowerCase();
   const filtered = games.filter(g => g.name.toLowerCase().includes(q));
   renderGames(filtered);
 });
 
+// Category filter
 document.getElementById("category-filter").addEventListener("change", e => {
   const cat = e.target.value;
   if (cat === "all") {
@@ -74,21 +87,25 @@ document.getElementById("category-filter").addEventListener("change", e => {
   }
 });
 
+// Favorites filter
 document.getElementById("show-favorites").onclick = () => {
   const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
   const filtered = games.filter(g => favs.includes(g.name));
   renderGames(filtered);
 };
 
+// Recent filter
 document.getElementById("show-recent").onclick = () => {
   const recent = JSON.parse(localStorage.getItem("recent") || "[]");
   const filtered = games.filter(g => recent.includes(g.name));
   renderGames(filtered);
 };
 
+// Featured
 function loadFeatured() {
   const featured = games.slice(0, 4);
   const container = document.getElementById("featured-list");
+  container.innerHTML = "";
 
   featured.forEach(game => {
     const div = document.createElement("div");
@@ -102,13 +119,14 @@ function loadFeatured() {
   });
 }
 
+// Theme toggle
 const toggle = document.getElementById("theme-toggle");
-
 toggle.onclick = () => {
   document.body.classList.toggle("light-mode");
   toggle.textContent = document.body.classList.contains("light-mode") ? "☀️" : "🌙";
 };
 
+// Loader
 window.onload = () => {
   document.getElementById("loader").style.display = "none";
 };
