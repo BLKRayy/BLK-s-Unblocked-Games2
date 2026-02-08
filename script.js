@@ -1,6 +1,7 @@
 // script.js
 
 let games = [];
+let playCounts = {}; // name -> count
 
 // player name
 let playerName = localStorage.getItem("playerName") || "";
@@ -11,6 +12,19 @@ if (playerInput) {
     playerName = e.target.value.trim();
     localStorage.setItem("playerName", playerName);
   });
+}
+
+// Load play counts
+function loadPlayCounts() {
+  try {
+    playCounts = JSON.parse(localStorage.getItem("playCounts") || "{}");
+  } catch {
+    playCounts = {};
+  }
+}
+
+function savePlayCounts() {
+  localStorage.setItem("playCounts", JSON.stringify(playCounts));
 }
 
 // Load games
@@ -34,6 +48,7 @@ async function loadGames() {
 
   renderGameGrid(games);
   loadFeatured();
+  renderMostPlayed();
 }
 
 // Game grid
@@ -45,7 +60,7 @@ function renderGameGrid(list) {
 
   grid.innerHTML = "";
 
-  list.forEach(game => {
+  list.forEach((game, index) => {
     const card = document.createElement("div");
     card.className = "game-card";
 
@@ -58,19 +73,31 @@ function renderGameGrid(list) {
       </div>
     `;
 
+    // wave animation delay
+    setTimeout(() => {
+      card.classList.add("wave-in");
+    }, index * 40);
+
     card.addEventListener("click", e => {
       if (e.target.classList.contains("fav-btn")) return;
+
+      // ripple effect
+      card.classList.remove("ripple");
+      void card.offsetWidth;
+      card.classList.add("ripple");
 
       title.textContent = game.name;
       subtitle.textContent = game.description || "Enjoy your game.";
       frame.src = game.url;
 
+      // recent
       let recent = JSON.parse(localStorage.getItem("recent") || "[]");
       recent = recent.filter(n => n !== game.name);
       recent.unshift(game.name);
       recent = recent.slice(0, 6);
       localStorage.setItem("recent", JSON.stringify(recent));
 
+      // play log
       if (playerName) {
         let log = JSON.parse(localStorage.getItem("playLog") || "[]");
         log.unshift({
@@ -81,6 +108,29 @@ function renderGameGrid(list) {
         log = log.slice(0, 50);
         localStorage.setItem("playLog", JSON.stringify(log));
       }
+
+      // play counts
+      playCounts[game.name] = (playCounts[game.name] || 0) + 1;
+      savePlayCounts();
+      renderMostPlayed();
+      updateInfoPanel(game);
+      openInfoPanel();
+    });
+
+    // tilt effect
+    card.addEventListener("mousemove", e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * 4;
+      const rotateY = ((x - centerX) / centerX) * -4;
+      card.style.transform = `translateY(-3px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "";
     });
 
     grid.appendChild(card);
@@ -129,7 +179,9 @@ document.getElementById("show-recent").onclick = () => {
   renderGameGrid(filtered);
 };
 
-// Featured (top games)
+// Featured (top games) + carousel
+let featuredOffset = 0;
+
 function loadFeatured() {
   const container = document.getElementById("featured-list");
   container.innerHTML = "";
@@ -147,9 +199,75 @@ function loadFeatured() {
       document.getElementById("game-title").textContent = game.name;
       document.getElementById("game-subtitle").textContent = game.description || "Enjoy your game.";
       document.getElementById("game-frame").src = game.url;
+
+      playCounts[game.name] = (playCounts[game.name] || 0) + 1;
+      savePlayCounts();
+      renderMostPlayed();
+      updateInfoPanel(game);
+      openInfoPanel();
     };
     container.appendChild(div);
   });
+
+  featuredOffset = 0;
+  updateFeaturedTransform();
+}
+
+function updateFeaturedTransform() {
+  const container = document.getElementById("featured-list");
+  const wrap = document.getElementById("featured-list-wrap");
+  if (!container || !wrap) return;
+  const maxOffset = Math.max(0, container.scrollWidth - wrap.clientWidth);
+  if (featuredOffset < 0) featuredOffset = 0;
+  if (featuredOffset > maxOffset) featuredOffset = maxOffset;
+  container.style.transform = `translateX(-${featuredOffset}px)`;
+}
+
+document.getElementById("featured-prev").onclick = () => {
+  featuredOffset -= 120;
+  updateFeaturedTransform();
+};
+
+document.getElementById("featured-next").onclick = () => {
+  featuredOffset += 120;
+  updateFeaturedTransform();
+};
+
+// auto-scroll
+setInterval(() => {
+  const wrap = document.getElementById("featured-list-wrap");
+  const container = document.getElementById("featured-list");
+  if (!wrap || !container) return;
+  const maxOffset = Math.max(0, container.scrollWidth - wrap.clientWidth);
+  if (maxOffset <= 0) return;
+  featuredOffset += 60;
+  if (featuredOffset > maxOffset) featuredOffset = 0;
+  updateFeaturedTransform();
+}, 5000);
+
+// Most Played
+function renderMostPlayed() {
+  const list = document.getElementById("most-played-list");
+  if (!list) return;
+  list.innerHTML = "";
+
+  const entries = Object.entries(playCounts);
+  if (entries.length === 0) {
+    list.innerHTML = `<div class="most-played-item">Play some games to see stats here.</div>`;
+    return;
+  }
+
+  entries
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .forEach(([name, count]) => {
+      const game = games.find(g => g.name === name);
+      if (!game) return;
+      const div = document.createElement("div");
+      div.className = "most-played-item";
+      div.textContent = `${game.name} (${count})`;
+      list.appendChild(div);
+    });
 }
 
 // Theme toggle
@@ -226,6 +344,32 @@ document.getElementById("fullscreen-btn").onclick = () => {
   setTimeout(() => { if (hint) hint.style.opacity = "0"; }, 3000);
 };
 
+// Game Info Panel
+const infoPanel = document.getElementById("game-info-panel");
+const infoCloseBtn = document.getElementById("info-close-btn");
+
+function updateInfoPanel(game) {
+  if (!infoPanel) return;
+  document.getElementById("info-title").textContent = game.name;
+  document.getElementById("info-description").textContent = game.description || "No description.";
+  document.getElementById("info-category").textContent = game.category || "Other";
+  document.getElementById("info-tags").textContent = (game.tags || []).join(", ") || "None";
+  document.getElementById("info-rating").textContent = game.rating ? `${game.rating}/5` : "N/A";
+  document.getElementById("info-plays").textContent = playCounts[game.name] || 0;
+}
+
+function openInfoPanel() {
+  if (!infoPanel) return;
+  infoPanel.style.display = "flex";
+}
+
+function closeInfoPanel() {
+  if (!infoPanel) return;
+  infoPanel.style.display = "none";
+}
+
+infoCloseBtn.onclick = closeInfoPanel;
+
 // AI Mode
 const aiOrb = document.getElementById("ai-orb");
 const aiModal = document.getElementById("ai-modal");
@@ -234,6 +378,7 @@ const aiCloseBtn = document.getElementById("ai-close-btn");
 const aiInput = document.getElementById("ai-input");
 const aiSendBtn = document.getElementById("ai-send-btn");
 const aiMessages = document.getElementById("ai-messages");
+const aiTyping = document.getElementById("ai-typing-indicator");
 
 function openAiModal() {
   aiModal.style.display = "flex";
@@ -272,15 +417,21 @@ function generateAiResponse(prompt) {
   return "Here’s a way to think about it:\n• Start with a simple definition.\n• Add one real‑life example.\n• Then try to explain it back in your own words.\nIf you tell me the exact topic, I can structure it like that.";
 }
 
+function showTyping(show) {
+  aiTyping.classList.toggle("hidden", !show);
+}
+
 function handleAiSend() {
   const text = aiInput.value.trim();
   if (!text) return;
   addAiMessage(text, "user");
   aiInput.value = "";
+  showTyping(true);
   setTimeout(() => {
     const reply = generateAiResponse(text);
+    showTyping(false);
     addAiMessage(reply, "bot");
-  }, 400);
+  }, 600);
 }
 
 aiSendBtn.onclick = handleAiSend;
@@ -293,6 +444,7 @@ window.addEventListener("load", () => {
   document.getElementById("loader").style.display = "none";
 });
 
+loadPlayCounts();
 loadGames();
 loadAnnouncementBar();
 loadTimerBar();
