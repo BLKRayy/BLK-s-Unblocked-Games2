@@ -1,4 +1,5 @@
-// Admin credentials
+// admin.js
+
 const USER = "admin";
 const PASS = "loyal";
 
