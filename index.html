@@ -7,7 +7,22 @@
 </head>
 <body>
 
-<div id="loader">Loading...</div>
+<div id="loader">
+  <div class="loader-box">
+    <div class="loader-logo">BLK</div>
+    <div class="loader-text">Loading your games...</div>
+    <div class="loader-bar">
+      <div class="loader-bar-fill"></div>
+    </div>
+  </div>
+</div>
+
+<div id="maintenance-overlay" style="display:none;">
+  <div class="maintenance-box">
+    <h2>Maintenance Mode</h2>
+    <p>BLK Games is currently under maintenance. Please check back later.</p>
+  </div>
+</div>
 
 <header>
   <img id="logo" src="https://raw.githubusercontent.com/BLKRayy/BLK-s-Unblocked-Games2/main/logo.png" alt="BLK Games Logo">
@@ -32,6 +47,9 @@
   <button id="show-favorites">⭐ Favorites</button>
   <button id="show-recent">🕒 Recent</button>
 
+  <button id="quiz-mode-btn">📝 Quiz Builder</button>
+  <button id="blk-search-btn">🔍 BLK</button>
+
   <button id="theme-toggle">🌙</button>
 
   <a id="admin-link" href="admin.html">Admin</a>
@@ -41,18 +59,53 @@
 <div id="timer-bar" style="display:none;"></div>
 
 <main>
-  <aside id="game-list"></aside>
+  <section id="game-grid-section">
+    <h2 class="section-title">All Games</h2>
+    <div id="game-grid"></div>
+  </section>
 
   <section id="game-viewer">
     <div id="featured">
-      <h2>Featured Games</h2>
+      <h2>Top Games</h2>
       <div id="featured-list"></div>
     </div>
 
-    <h2 id="game-title">Select a game</h2>
+    <div id="viewer-header">
+      <h2 id="game-title">Select a game</h2>
+      <button id="fullscreen-btn">⛶ Fullscreen</button>
+    </div>
     <iframe id="game-frame" src="" frameborder="0"></iframe>
+
+    <div id="changelog-box">
+      <h3>Update Log</h3>
+      <div id="changelog-content"></div>
+    </div>
   </section>
 </main>
+
+<!-- Quiz Builder Modal -->
+<div id="quiz-modal" class="overlay" style="display:none;">
+  <div class="overlay-content">
+    <h2>BLK Quiz Builder</h2>
+    <p>Create simple quizzes students can take on this device.</p>
+    <input id="quiz-title" placeholder="Quiz title"><br>
+    <textarea id="quiz-questions" rows="8" placeholder="One question per line. Use ? at the end."></textarea><br>
+    <button id="quiz-start-btn">Start Quiz</button>
+    <button class="overlay-close" data-target="quiz-modal">Close</button>
+    <div id="quiz-play-area" style="margin-top:15px;"></div>
+  </div>
+</div>
+
+<!-- BLK Search Modal -->
+<div id="blk-modal" class="overlay" style="display:none;">
+  <div class="overlay-content blk-search">
+    <div class="blk-logo">BLK</div>
+    <input id="blk-search-input" placeholder="Search BLK Games...">
+    <button id="blk-search-go">Search</button>
+    <button class="overlay-close" data-target="blk-modal">Close</button>
+    <div id="blk-results"></div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
