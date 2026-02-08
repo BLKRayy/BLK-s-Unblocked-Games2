@@ -237,6 +237,7 @@ header {
 }
 
 .icon-btn {
+  position: relative;
   width: 32px;
   height: 32px;
   border-radius: 999px;
@@ -251,6 +252,25 @@ header {
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
+.icon-btn::after,
+.admin-link::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: -3px;
+  height: 2px;
+  background: linear-gradient(90deg, #0a84ff, #00d4ff);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.18s ease-out;
+}
+
+.icon-btn:hover::after,
+.admin-link:hover::after {
+  transform: scaleX(1);
+}
+
 .icon-btn:hover {
   transform: translateY(-1px);
   background: rgba(10,10,25,1);
@@ -258,6 +278,7 @@ header {
 }
 
 .admin-link {
+  position: relative;
   padding: 6px 12px;
   border-radius: 999px;
   border: 1px solid rgba(10,132,255,0.7);
@@ -337,6 +358,7 @@ main {
 }
 
 .game-card {
+  position: relative;
   background: radial-gradient(circle at top, #181828 0, #0b0b15 60%);
   border-radius: 14px;
   padding: 8px;
@@ -347,10 +369,45 @@ main {
   box-shadow: 0 0 0 rgba(10,132,255,0);
   border: 1px solid rgba(255,255,255,0.04);
   transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transform-style: preserve-3d;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.game-card.wave-in {
+  animation: cardWaveIn 0.35s ease-out forwards;
+}
+
+@keyframes cardWaveIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.game-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(10,132,255,0.35) 0, transparent 60%);
+  opacity: 0;
+  transform: scale(0);
+  pointer-events: none;
+}
+
+.game-card.ripple::before {
+  animation: rippleEffect 0.4s ease-out forwards;
+}
+
+@keyframes rippleEffect {
+  0% { opacity: 0.4; transform: scale(0); }
+  100% { opacity: 0; transform: scale(2.2); }
 }
 
 .game-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-3px) rotateX(3deg) rotateY(-3deg);
   box-shadow: 0 0 18px rgba(10,132,255,0.7);
   border-color: rgba(10,132,255,0.7);
 }
@@ -415,14 +472,27 @@ main {
   color: #9aa4ff;
 }
 
-#featured-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  gap: 8px;
+.featured-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin-top: 8px;
 }
 
+#featured-list-wrap {
+  overflow: hidden;
+  flex: 1;
+}
+
+#featured-list {
+  display: flex;
+  gap: 8px;
+  transition: transform 0.35s ease-out;
+}
+
 .featured-item {
+  min-width: 110px;
+  max-width: 110px;
   background: rgba(10,10,25,0.95);
   padding: 6px;
   border-radius: 12px;
@@ -445,6 +515,41 @@ main {
   transform: translateY(-2px);
   box-shadow: 0 0 16px rgba(10,132,255,0.8);
   border-color: rgba(10,132,255,0.8);
+}
+
+.featured-arrow {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(10,132,255,0.7);
+  background: rgba(10,10,25,0.95);
+  color: #cfd8ff;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* Most Played */
+#most-played-section {
+  background: radial-gradient(circle at top, #181828 0, #0b0b15 60%);
+  padding: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+#most-played-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.most-played-item {
+  background: rgba(10,10,25,0.95);
+  padding: 6px;
+  border-radius: 12px;
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 /* Viewer */
@@ -526,6 +631,42 @@ main {
   max-height: 120px;
   overflow-y: auto;
   white-space: pre-wrap;
+  color: #cfd8ff;
+}
+
+/* Game Info Panel */
+#game-info-panel {
+  position: fixed;
+  top: 60px;
+  right: 18px;
+  width: 260px;
+  max-height: calc(100vh - 80px);
+  background: radial-gradient(circle at top, #181828 0, #050509 70%);
+  border-radius: 16px;
+  border: 1px solid rgba(10,132,255,0.8);
+  box-shadow: 0 0 26px rgba(10,132,255,0.9);
+  padding: 10px 12px;
+  display: none;
+  flex-direction: column;
+  z-index: 15;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+#info-close-btn {
+  border: none;
+  background: transparent;
+  color: #cfd8ff;
+  cursor: pointer;
+}
+
+.info-body {
+  font-size: 12px;
   color: #cfd8ff;
 }
 
@@ -631,31 +772,37 @@ main {
 #ai-messages {
   max-height: 220px;
   overflow-y: auto;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
 }
 
 .ai-message {
   font-size: 13px;
   padding: 6px 8px;
-  border-radius: 10px;
+  border-radius: 12px;
   margin-bottom: 6px;
+  max-width: 90%;
 }
 
 .ai-message-system {
   background: rgba(10,10,25,0.9);
   color: #cfd8ff;
+  align-self: center;
 }
 
 .ai-message-user {
   background: rgba(10,132,255,0.2);
   color: #e4ecff;
   align-self: flex-end;
+  border: 1px solid rgba(10,132,255,0.7);
 }
 
 .ai-message-bot {
   background: rgba(10,10,25,0.95);
   border: 1px solid rgba(10,132,255,0.5);
   color: #e4ecff;
+  align-self: flex-start;
 }
 
 .ai-input-row {
@@ -684,6 +831,35 @@ main {
   font-size: 12px;
 }
 
+/* AI typing indicator */
+.ai-typing {
+  display: flex;
+  gap: 4px;
+  padding: 4px 6px;
+  margin-bottom: 6px;
+}
+
+.ai-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0a84ff;
+  box-shadow: 0 0 8px rgba(10,132,255,0.9);
+  animation: typingDots 1s infinite ease-in-out;
+}
+
+.ai-typing span:nth-child(2) { animation-delay: 0.15s; }
+.ai-typing span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes typingDots {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(-3px); opacity: 1; }
+}
+
+.hidden {
+  display: none;
+}
+
 /* Light mode */
 .light-mode {
   background: radial-gradient(circle at top, #f5f7ff 0, #dfe4ff 45%, #cfd8ff 100%);
@@ -705,7 +881,8 @@ main {
 
 .light-mode .game-card,
 .light-mode #featured,
-.light-mode #changelog-box {
+.light-mode #changelog-box,
+.light-mode #most-played-section {
   background: #f0f2ff;
   border-color: rgba(0,0,0,0.06);
   box-shadow: none;
@@ -838,5 +1015,8 @@ main {
   }
   #game-viewer {
     min-width: 100%;
+  }
+  #game-info-panel {
+    display: none !important;
   }
 }
