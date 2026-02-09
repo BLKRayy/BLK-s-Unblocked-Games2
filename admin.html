@@ -258,6 +258,107 @@
       gap: 6px;
     }
 
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .admin-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: radial-gradient(circle at top, #4f8cff, #3dd68c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #050814;
+    }
+
+    .admin-brand-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .admin-brand-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .admin-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .admin-nav-item {
+      font-size: 0.85rem;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .admin-nav-item--active {
+      background: rgba(79, 140, 255, 0.16);
+      color: var(--text-main);
+    }
+
+    .admin-main-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .admin-main-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .admin-main-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .admin-theme-toggle {
+      border-radius: 999px;
+      border: 1px solid rgba(79, 140, 255, 0.6);
+      background: rgba(5, 8, 20, 0.9);
+      color: var(--text-main);
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .admin-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .admin-card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .admin-card-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .admin-card-badge {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(79, 140, 255, 0.6);
+      color: var(--accent);
+    }
+
     .app-shell--login-exiting .login-wrapper {
       transform: translateX(-120%);
     }
@@ -285,25 +386,25 @@
       <div class="login-header">
         <div class="login-title-group">
           <div class="login-title">Admin Access</div>
-          <div class="login-subtitle">Secure control panel</div>
+          <div class="login-subtitle">Secure control panel for your site</div>
         </div>
         <div class="login-badge">Restricted</div>
       </div>
 
       <form class="login-form" id="loginForm">
         <div class="field-group">
-          <label class="field-label">Username</label>
+          <label class="field-label" for="admin-username">Username</label>
           <div class="field-input-wrapper">
             <div class="field-icon">U</div>
-            <input id="admin-username" class="field-input" type="text" required />
+            <input id="admin-username" class="field-input" type="text" autocomplete="username" required />
           </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label">Password</label>
+          <label class="field-label" for="admin-password">Password</label>
           <div class="field-input-wrapper">
             <div class="field-icon">●</div>
-            <input id="admin-password" class="field-input" type="password" required />
+            <input id="admin-password" class="field-input" type="password" autocomplete="current-password" required />
           </div>
         </div>
 
@@ -314,7 +415,7 @@
           </label>
         </div>
 
-        <button id="loginButton" class="login-button">
+        <button id="loginButton" class="login-button" type="submit">
           <span class="login-button-label">Unlock Admin</span>
         </button>
 
@@ -328,7 +429,7 @@
         <div class="admin-sidebar">
           <div class="admin-brand">
             <div class="admin-logo">A</div>
-            <div class="admin-brand-text">
+            <div>
               <div class="admin-brand-title">Admin</div>
               <div class="admin-brand-subtitle">Control Panel</div>
             </div>
@@ -346,12 +447,12 @@
 
         <div class="admin-main">
           <div class="admin-main-header">
-            <div class="admin-main-title-group">
+            <div>
               <div id="adminMainTitle" class="admin-main-title">Dashboard</div>
               <div id="adminMainSubtitle" class="admin-main-subtitle">Overview</div>
             </div>
 
-            <button id="themeToggle" class="admin-theme-toggle">Theme</button>
+            <button id="themeToggle" class="admin-theme-toggle" type="button">Theme</button>
           </div>
 
           <div class="admin-content">
