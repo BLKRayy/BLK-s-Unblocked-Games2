@@ -5,543 +5,389 @@
   <title>Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Base styles -->
   <style>
-    <style>
-  :root {
-    --bg-color: #050814;
-    --bg-accent: #0b1024;
-    --card-bg: #111729;
-    --card-border: #1f2940;
-    --accent: #4f8cff;
-    --text-main: #f5f7ff;
-    --text-muted: #9aa3c7;
-    --danger: #ff4f6b;
-    --success: #3dd68c;
-    --transition-slow: 0.55s ease;
-    --transition-med: 0.45s ease;
-  }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: radial-gradient(circle at top, #151b3a 0, #050814 55%, #02030a 100%);
-    color: var(--text-main);
-    min-height: 100vh;
-    overflow: hidden;
-  }
-
-  .app-background {
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(circle at top left, rgba(79, 140, 255, 0.18), transparent 55%),
-      radial-gradient(circle at bottom right, rgba(61, 214, 140, 0.18), transparent 55%),
-      linear-gradient(135deg, #050814, #050814 40%, #02030a 100%);
-    transition: transform var(--transition-slow);
-    will-change: transform;
-    z-index: -2;
-  }
-
-  .app-shell {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-
-  .login-wrapper {
-    position: relative;
-    max-width: 420px;
-    width: 100%;
-    background: radial-gradient(circle at top, #1a2340 0, #111729 55%, #0b1024 100%);
-    border-radius: 18px;
-    border: 1px solid var(--card-border);
-    box-shadow:
-      0 24px 60px rgba(0, 0, 0, 0.65),
-      0 0 0 1px rgba(255, 255, 255, 0.02);
-    padding: 28px 26px 24px;
-    overflow: hidden;
-    transform: translateX(0);
-    transition: transform var(--transition-slow);
-    will-change: transform;
-    z-index: 3;
-  }
-
-  .login-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 18px;
-  }
-
-  .login-title-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .login-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-  }
-
-  .login-subtitle {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
-
-  .login-badge {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    padding: 4px 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(79, 140, 255, 0.5);
-    background: linear-gradient(135deg, rgba(79, 140, 255, 0.18), rgba(79, 140, 255, 0.05));
-    color: var(--accent);
-  }
-
-  .login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    margin-top: 4px;
-  }
-
-  .field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .field-label {
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
-  }
-
-  .field-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    background: rgba(5, 8, 20, 0.9);
-    border-radius: 10px;
-    border: 1px solid rgba(31, 41, 64, 0.9);
-    padding: 8px 10px;
-    gap: 8px;
-  }
-
-  .field-input-wrapper:focus-within {
-    border-color: rgba(79, 140, 255, 0.9);
-    box-shadow: 0 0 0 1px rgba(79, 140, 255, 0.35);
-  }
-
-  .field-icon {
-    width: 18px;
-    height: 18px;
-    border-radius: 999px;
-    background: radial-gradient(circle at top, rgba(79, 140, 255, 0.9), rgba(79, 140, 255, 0.2));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    color: #050814;
-  }
-
-  .field-input {
-    border: none;
-    outline: none;
-    background: transparent;
-    color: var(--text-main);
-    font-size: 0.9rem;
-    width: 100%;
-  }
-
-  .field-input::placeholder {
-    color: rgba(154, 163, 199, 0.7);
-  }
-
-  .login-footer-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 6px;
-    margin-bottom: 4px;
-  }
-
-  .remember-me {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-  }
-
-  .remember-me input {
-    width: 14px;
-    height: 14px;
-    accent-color: var(--accent);
-  }
-
-  .login-meta {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-  }
-
-  .login-button {
-    margin-top: 10px;
-    width: 100%;
-    border: none;
-    outline: none;
-    border-radius: 999px;
-    padding: 10px 14px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    background: linear-gradient(135deg, #4f8cff, #3dd68c);
-    color: #050814;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    box-shadow:
-      0 10px 30px rgba(79, 140, 255, 0.45),
-      0 0 0 1px rgba(5, 8, 20, 0.9);
-    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
-  }
-
-  .login-button-spinner {
-    width: 14px;
-    height: 14px;
-    border-radius: 999px;
-    border: 2px solid rgba(5, 8, 20, 0.4);
-    border-top-color: #050814;
-    animation: spin 0.7s linear infinite;
-  }
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
+    :root {
+      --bg-color: #050814;
+      --bg-accent: #0b1024;
+      --card-bg: #111729;
+      --card-border: #1f2940;
+      --accent: #4f8cff;
+      --text-main: #f5f7ff;
+      --text-muted: #9aa3c7;
+      --danger: #ff4f6b;
+      --success: #3dd68c;
+      --transition-slow: 0.55s ease;
+      --transition-med: 0.45s ease;
     }
-  }
 
-  .login-error {
-    margin-top: 10px;
-    font-size: 0.8rem;
-    color: var(--danger);
-    min-height: 16px;
-  }
-
-  .admin-shell {
-    position: absolute;
-    inset: 0;
-    padding: 18px 22px;
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    transform: scale(0.96);
-    pointer-events: none;
-    transition:
-      opacity var(--transition-med),
-      transform var(--transition-med);
-    will-change: opacity, transform;
-    z-index: 1;
-  }
-
-  .admin-shell--visible {
-    opacity: 1;
-    transform: scale(1);
-    pointer-events: auto;
-  }
-
-  .admin-layout {
-    display: grid;
-    grid-template-columns: 240px minmax(0, 1fr);
-    gap: 18px;
-    height: 100%;
-  }
-
-  .admin-sidebar {
-    background: linear-gradient(180deg, rgba(11, 16, 36, 0.98), rgba(5, 8, 20, 0.98));
-    border-radius: 16px;
-    border: 1px solid rgba(31, 41, 64, 0.9);
-    padding: 14px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .admin-main {
-    background: radial-gradient(circle at top, rgba(26, 35, 64, 0.9), rgba(11, 16, 36, 0.98));
-    border-radius: 16px;
-    border: 1px solid rgba(31, 41, 64, 0.9);
-    padding: 14px 14px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    overflow: hidden;
-  }
-
-  .admin-content {
-    flex: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: 10px;
-    margin-top: 4px;
-  }
-
-  .admin-card {
-    background: rgba(5, 8, 20, 0.9);
-    border-radius: 12px;
-    border: 1px solid rgba(31, 41, 64, 0.9);
-    padding: 10px 10px 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .app-shell--login-exiting .login-wrapper {
-    transform: translateX(-120%);
-  }
-
-  .app-shell--login-exiting .app-background {
-    transform: translateX(-10px);
-  }
-
-  .app-shell--admin-entering .admin-shell {
-    opacity: 1;
-    transform: scale(1);
-    pointer-events: auto;
-  }
-
-  @media (max-width: 900px) {
-    .admin-layout {
-      grid-template-columns: 1fr;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-  }
 
-  @media (max-width: 640px) {
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #151b3a 0, #050814 55%, #02030a 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .app-background {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(79, 140, 255, 0.18), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(61, 214, 140, 0.18), transparent 55%),
+        linear-gradient(135deg, #050814, #050814 40%, #02030a 100%);
+      transition: transform var(--transition-slow);
+      will-change: transform;
+      z-index: -2;
+    }
+
+    .app-shell {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
     .login-wrapper {
-      max-width: 100%;
-      padding: 22px 18px 18px;
+      position: relative;
+      max-width: 420px;
+      width: 100%;
+      background: radial-gradient(circle at top, #1a2340 0, #111729 55%, #0b1024 100%);
+      border-radius: 18px;
+      border: 1px solid var(--card-border);
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.65),
+        0 0 0 1px rgba(255, 255, 255, 0.02);
+      padding: 28px 26px 24px;
+      overflow: hidden;
+      transform: translateX(0);
+      transition: transform var(--transition-slow);
+      will-change: transform;
+      z-index: 3;
+    }
+
+    .login-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .login-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .login-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .login-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .login-badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(79, 140, 255, 0.5);
+      background: linear-gradient(135deg, rgba(79, 140, 255, 0.18), rgba(79, 140, 255, 0.05));
+      color: var(--accent);
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 4px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .field-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: rgba(5, 8, 20, 0.9);
+      border-radius: 10px;
+      border: 1px solid rgba(31, 41, 64, 0.9);
+      padding: 8px 10px;
+      gap: 8px;
+    }
+
+    .field-input {
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      width: 100%;
+    }
+
+    .login-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      margin-bottom: 4px;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .login-button {
+      margin-top: 10px;
+      width: 100%;
+      border: none;
+      outline: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #4f8cff, #3dd68c);
+      color: #050814;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .login-error {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--danger);
+      min-height: 16px;
     }
 
     .admin-shell {
-      padding: 12px 10px;
+      position: absolute;
+      inset: 0;
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: scale(0.96);
+      pointer-events: none;
+      transition:
+        opacity var(--transition-med),
+        transform var(--transition-med);
+      z-index: 1;
+    }
+
+    .admin-shell--visible {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 18px;
+      height: 100%;
+    }
+
+    .admin-sidebar {
+      background: linear-gradient(180deg, rgba(11, 16, 36, 0.98), rgba(5, 8, 20, 0.98));
+      border-radius: 16px;
+      border: 1px solid rgba(31, 41, 64, 0.9);
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .admin-main {
+      background: radial-gradient(circle at top, rgba(26, 35, 64, 0.9), rgba(11, 16, 36, 0.98));
+      border-radius: 16px;
+      border: 1px solid rgba(31, 41, 64, 0.9);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
     }
 
     .admin-content {
-      grid-template-columns: 1fr;
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 10px;
+      margin-top: 4px;
     }
-  }
-</style>
 
+    .admin-card {
+      background: rgba(5, 8, 20, 0.9);
+      border-radius: 12px;
+      border: 1px solid rgba(31, 41, 64, 0.9);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .app-shell--login-exiting .login-wrapper {
+      transform: translateX(-120%);
+    }
+
+    .app-shell--login-exiting .app-background {
+      transform: translateX(-10px);
+    }
+
+    .app-shell--admin-entering .admin-shell {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
   </style>
+
+  <script defer src="admin.js"></script>
 </head>
+
 <body>
-  <!-- Background layer with parallax shift -->
   <div class="app-background" id="appBackground"></div>
 
-  <!-- App shell holding login + admin -->
   <div class="app-shell" id="appShell">
-    <!-- Centered login card -->
+
     <div class="login-wrapper" id="loginWrapper">
-      <!-- Login header -->
       <div class="login-header">
         <div class="login-title-group">
           <div class="login-title">Admin Access</div>
-          <div class="login-subtitle">Secure control panel for your game site</div>
+          <div class="login-subtitle">Secure control panel</div>
         </div>
         <div class="login-badge">Restricted</div>
       </div>
 
-      <!-- Login form -->
       <form class="login-form" id="loginForm">
         <div class="field-group">
-          <label class="field-label" for="admin-username">Username</label>
+          <label class="field-label">Username</label>
           <div class="field-input-wrapper">
             <div class="field-icon">U</div>
-            <input
-              id="admin-username"
-              class="field-input"
-              type="text"
-              autocomplete="username"
-              placeholder="Enter admin username"
-              required
-            />
+            <input id="admin-username" class="field-input" type="text" required />
           </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label" for="admin-password">Password</label>
+          <label class="field-label">Password</label>
           <div class="field-input-wrapper">
             <div class="field-icon">●</div>
-            <input
-              id="admin-password"
-              class="field-input"
-              type="password"
-              autocomplete="current-password"
-              placeholder="Enter admin password"
-              required
-            />
+            <input id="admin-password" class="field-input" type="password" required />
           </div>
         </div>
 
         <div class="login-footer-row">
           <label class="remember-me">
-            <input type="checkbox" id="rememberMe" />
-            <span>Remember this device</span>
+            <input type="checkbox" />
+            Remember me
           </label>
-          <div class="login-meta">Attempts are logged</div>
         </div>
 
-        <button type="submit" class="login-button" id="loginButton">
+        <button id="loginButton" class="login-button">
           <span class="login-button-label">Unlock Admin</span>
         </button>
 
-        <div class="login-error" id="loginError"></div>
+        <div id="loginError" class="login-error"></div>
       </form>
     </div>
 
-    <!-- Admin shell (hidden until login completes) -->
     <div class="admin-shell" id="adminShell">
       <div class="admin-layout">
-        <!-- Admin sidebar -->
-        <aside class="admin-sidebar">
+
+        <div class="admin-sidebar">
           <div class="admin-brand">
             <div class="admin-logo">A</div>
             <div class="admin-brand-text">
-              <div class="admin-brand-title">Admin Core</div>
-              <div class="admin-brand-subtitle">Control & Analytics</div>
+              <div class="admin-brand-title">Admin</div>
+              <div class="admin-brand-subtitle">Control Panel</div>
             </div>
           </div>
 
-          <div>
-            <div class="admin-nav-section-label">Navigation</div>
-            <ul class="admin-nav-list" id="adminNav">
-              <li class="admin-nav-item admin-nav-item--active" data-section="dashboard">
-                <div class="admin-nav-dot"></div>
-                <span>Dashboard</span>
-              </li>
-              <li class="admin-nav-item" data-section="games">
-                <div class="admin-nav-dot"></div>
-                <span>Games & Categories</span>
-              </li>
-              <li class="admin-nav-item" data-section="users">
-                <div class="admin-nav-dot"></div>
-                <span>Users & Sessions</span>
-              </li>
-              <li class="admin-nav-item" data-section="analytics">
-                <div class="admin-nav-dot"></div>
-                <span>Analytics</span>
-              </li>
-              <li class="admin-nav-item" data-section="logs">
-                <div class="admin-nav-dot"></div>
-                <span>Security Logs</span>
-              </li>
-              <li class="admin-nav-item" data-section="settings">
-                <div class="admin-nav-dot"></div>
-                <span>Settings</span>
-              </li>
-            </ul>
-          </div>
-        </aside>
+          <ul class="admin-nav-list" id="adminNav">
+            <li class="admin-nav-item admin-nav-item--active" data-section="dashboard">Dashboard</li>
+            <li class="admin-nav-item" data-section="games">Games</li>
+            <li class="admin-nav-item" data-section="users">Users</li>
+            <li class="admin-nav-item" data-section="analytics">Analytics</li>
+            <li class="admin-nav-item" data-section="logs">Logs</li>
+            <li class="admin-nav-item" data-section="settings">Settings</li>
+          </ul>
+        </div>
 
-        <!-- Admin main content -->
-        <main class="admin-main">
-          <header class="admin-main-header">
+        <div class="admin-main">
+          <div class="admin-main-header">
             <div class="admin-main-title-group">
-              <div class="admin-main-title" id="adminMainTitle">Dashboard</div>
-              <div class="admin-main-subtitle" id="adminMainSubtitle">
-                Overview of activity, performance, and system health
-              </div>
+              <div id="adminMainTitle" class="admin-main-title">Dashboard</div>
+              <div id="adminMainSubtitle" class="admin-main-subtitle">Overview</div>
             </div>
-            <div class="admin-main-actions">
-              <div class="admin-pill" id="adminStatusPill">System Stable</div>
-              <button type="button" class="admin-theme-toggle" id="themeToggle">
-                <span>Theme</span>
-              </button>
-            </div>
-          </header>
 
-          <section class="admin-content">
-            <!-- Left column: primary card -->
-            <div class="admin-card" id="adminPrimaryCard">
+            <button id="themeToggle" class="admin-theme-toggle">Theme</button>
+          </div>
+
+          <div class="admin-content">
+            <div class="admin-card">
               <div class="admin-card-header">
                 <div>
-                  <div class="admin-card-title" id="adminPrimaryTitle">Live Overview</div>
-                  <div class="admin-card-subtitle" id="adminPrimarySubtitle">
-                    Key metrics for your unblocked games site
-                  </div>
+                  <div id="adminPrimaryTitle" class="admin-card-title">Live Overview</div>
+                  <div id="adminPrimarySubtitle" class="admin-card-subtitle">Key metrics</div>
                 </div>
-                <span class="admin-card-badge" id="adminPrimaryBadge">Live</span>
+                <div id="adminPrimaryBadge" class="admin-card-badge">Live</div>
               </div>
-              <div class="admin-card-body" id="adminPrimaryBody">
-                <table class="admin-table">
-                  <thead>
-                    <tr>
-                      <th>Metric</th>
-                      <th>Value</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Active Sessions</td>
-                      <td id="metricActiveSessions">0</td>
-                      <td><span class="admin-tag admin-tag--success">OK</span></td>
-                    </tr>
-                    <tr>
-                      <td>Games Loaded</td>
-                      <td id="metricGamesLoaded">0</td>
-                      <td><span class="admin-tag">SYNCED</span></td>
-                    </tr>
-                    <tr>
-                      <td>Errors (24h)</td>
-                      <td id="metricErrors">0</td>
-                      <td><span class="admin-tag admin-tag--danger">LOW</span></td>
-                    </tr>
-                  </tbody>
-                </table>
+
+              <div class="admin-card-body">
+                Active Sessions: <span id="metricActiveSessions">0</span><br>
+                Games Loaded: <span id="metricGamesLoaded">0</span><br>
+                Errors: <span id="metricErrors">0</span>
               </div>
             </div>
 
-            <!-- Right column: secondary card -->
-            <div class="admin-card" id="adminSecondaryCard">
+            <div class="admin-card">
               <div class="admin-card-header">
                 <div>
-                  <div class="admin-card-title" id="adminSecondaryTitle">Recent Activity</div>
-                  <div class="admin-card-subtitle" id="adminSecondarySubtitle">
-                    Latest admin actions and security events
-                  </div>
+                  <div id="adminSecondaryTitle" class="admin-card-title">Recent Activity</div>
+                  <div id="adminSecondarySubtitle" class="admin-card-subtitle">Latest events</div>
                 </div>
               </div>
-              <div class="admin-card-body" id="adminSecondaryBody">
-                <ul id="adminActivityList" style="list-style:none; padding-left:0; display:flex; flex-direction:column; gap:4px;">
-                  <li>• No recent activity yet. Log in and start managing your site.</li>
-                </ul>
-              </div>
+
+              <ul id="adminActivityList" style="font-size:0.8rem; color:var(--text-muted);"></ul>
             </div>
-          </section>
-        </main>
+          </div>
+        </div>
+
       </div>
     </div>
-  </div>
 
-  <!-- External logic -->
-  <script src="admin.js"></script>
+  </div>
 </body>
 </html>
